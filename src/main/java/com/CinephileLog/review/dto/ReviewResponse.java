@@ -9,8 +9,10 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter; // Setter 추가
 
 @Getter
+@Setter // Setter 추가
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewResponse {
@@ -22,6 +24,7 @@ public class ReviewResponse {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private Long likeCount;
+    private boolean blinded;
 
     public ReviewResponse(Review review) {
         this.id = review.getId();
@@ -32,6 +35,7 @@ public class ReviewResponse {
         this.createdDate = review.getCreatedDate();
         this.updatedDate = review.getUpdatedDate();
         this.likeCount = review.getLikeCount();
+        this.blinded = review.isBlinded();
     }
 
     // 공통으로 반올림된 정수 값 저장

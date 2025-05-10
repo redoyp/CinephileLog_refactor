@@ -23,6 +23,7 @@
       <th>닉네임</th>
       <th>내용</th>
       <th>작성일</th>
+      <th>상태</th>
       <th>관리</th>
     </tr>
     </thead>
@@ -30,8 +31,14 @@
     <tr th:each="review : ${reviews}">
       <td th:text="${review.id}"></td>
       <td th:text="${review.user.nickname}"></td>
-      <td style="max-width: none; overflow: visible; text-overflow: inherit;"><span th:text="${review.content}"></span></td>
+      <td style="max-width: none; overflow: visible; text-overflow: inherit;">
+        <span th:text="${review.content}"></span>
+      </td>
       <td th:text="${#temporals.format(review.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+      <!-- 리뷰 상태 표시 -->
+      <td>
+        <span th:text="${review.blinded ? '숨김' : '숨김 해제'}"></span>
+      </td>
       <td>
         <a th:href="@{/admin/reviews/{id}(id=${review.id}, keyword=${keyword})}">관리</a>
       </td>

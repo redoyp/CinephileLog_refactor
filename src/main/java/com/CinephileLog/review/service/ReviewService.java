@@ -9,6 +9,7 @@ import com.CinephileLog.review.dto.ReviewRequest;
 import com.CinephileLog.review.dto.ReviewRequestUpdate;
 import com.CinephileLog.review.dto.ReviewResponse;
 import com.CinephileLog.review.repository.ReviewRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,10 +17,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-
 
 @Slf4j
 @Service
@@ -211,5 +208,20 @@ public class ReviewService {
 
     public List<Long> findTop3MovieIdsByReview() {
         return reviewRepository.findTop3MovieIdsByReview();
+    }
+
+    // 리뷰 블라인드 처리 (관리자페이지용)
+    public void blindReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 리뷰가 존재하지 않습니다."));
+        review.setBlinded(true); // 블라인드 상태로 변경
+        reviewRepository.save(review);
+    }
+
+    public void unblindReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 리뷰가 존재하지 않습니다."));
+        review.setBlinded(false); // 블라인드 해제 상태로 변경
+        reviewRepository.save(review);
     }
 }

@@ -29,7 +29,7 @@ public class ReviewRequest {
         return new Review(
                 null, user, movie, rating, content,
                 LocalDateTime.now(), null,
-                0L
+                0L, false
         );
     }
 }

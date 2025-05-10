@@ -44,7 +44,7 @@ class GradeServiceTest {
     void upgradeToCoke() {
         User user = saveUserWithGrade(1L);
         for (int i = 0; i < 10; i++) {
-            reviewRepository.save(new Review(user, movieList.get(i), 4.5, "내용"));
+            reviewRepository.save(new Review(user, movieList.get(i), 4.5, "내용", false));
         }
 
         gradeService.updateGradeForUser(user.getUserId());
@@ -57,7 +57,7 @@ class GradeServiceTest {
     void upgradeToNachos() {
         User user = saveUserWithGrade(2L);
         for (int i = 0; i < 30; i++) {
-            Review r = new Review(user, movieList.get(i), 5.0, "좋아요!");
+            Review r = new Review(user, movieList.get(i), 5.0, "좋아요!", false);
             reviewRepository.save(r);
             if (i < 10) {
                 reviewLikeRepository.save(new ReviewLike(user, r));

@@ -106,6 +106,7 @@ CREATE TABLE review (
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     like_count BIGINT NOT NULL DEFAULT 0,
+    blinded BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (review_id),
     FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (movie_id) REFERENCES movie(movie_id)

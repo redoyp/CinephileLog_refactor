@@ -75,26 +75,9 @@ h1 {
 .detail-box .button-container-review {
     margin-top: 20px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 10px;
-}
-
-.detail-box .button-container-review form button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    background-color: #dc3545;
-    color: white;
-    min-width: 120px;
-    text-align: center;
-}
-
-.detail-box .button-container-review form button:hover {
-    background-color: #c82333;
 }
 
 .detail-box .button-container-review a {
@@ -123,4 +106,33 @@ h1 {
 
 .review-list-container a:hover {
     background-color: #5a6268;
+}
+
+.blind-review-btn, .unblind-review-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+.blind-review-btn {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.blind-review-btn:hover {
+    background-color: #e0a800;
+}
+
+.unblind-review-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.unblind-review-btn:hover {
+    background-color: #218838;
 }
