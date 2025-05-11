@@ -7,6 +7,7 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,12 @@ public class MovieSearchService {
         try {
             SearchRequest request = new SearchRequest("movies");
 
+            BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.termQuery("title.keyword", keyword))
+                    .should(QueryBuilders.matchQuery("title", keyword));
+
             SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
-                    .query(QueryBuilders.matchQuery("title", keyword))
+                    .query(boolQuery)
                     .from(page * size)
                     .size(size);
 
@@ -48,4 +53,5 @@ public class MovieSearchService {
             throw new RuntimeException("검색 실패", e);
         }
     }
+
 }
