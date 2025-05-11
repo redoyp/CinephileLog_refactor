@@ -60,23 +60,26 @@
     </div>
 </div>
 
+<!-- JS 로딩 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(function() {
-        $('#searchInput').on('keyup', function() {
-            const keyword = $(this).val();
+    document.addEventListener("DOMContentLoaded", function () {
+        const $input = $('#searchInput');
+        const $list = $('#autocompleteList');
+
+        $input.on('keyup', function () {
+            const keyword = $input.val();
 
             if ((/[a-zA-Z]/.test(keyword) && keyword.length < 3) ||
-                (/[\u3131-\uD79D]/ugi.test(keyword) && keyword.length < 2)) {
-                $('#autocompleteList').empty();
+                (/[\u3131-\uD79D]/.test(keyword) && keyword.length < 2)) {
+                $list.empty();
                 return;
             }
 
             $.ajax({
                 url: '/autocomplete',
-                data: { keyword: keyword },
-                success: function(data) {
-                    const $list = $('#autocompleteList');
+                data: { keyword },
+                success: function (data) {
                     $list.empty();
 
                     if (data.length === 0) {
@@ -85,27 +88,28 @@
                     }
 
                     data.forEach(item => {
-                        const li = `<li class="list-group-item autocomplete-item" data-title="${item.title}">
-                        <div class="d-flex align-items-center">
-                            <img src="${item.posterUrl}" alt="poster">
-                            <span>${item.title} (${item.releaseYear})</span>
-                        </div>
-                    </li>`;
+                        const li = `
+                        <li class="list-group-item autocomplete-item" data-title="${item.title}">
+                            <div class="d-flex align-items-center">
+                                <img src="${item.posterUrl}" alt="poster">
+                                <span>${item.title} (${item.releaseYear || ''})</span>
+                            </div>
+                        </li>`;
                         $list.append(li);
                     });
                 }
             });
         });
 
-        $('#autocompleteList').on('click', '.autocomplete-item', function() {
+        $list.on('click', '.autocomplete-item', function () {
             const title = $(this).data('title');
-            $('#searchInput').val(title);
+            $input.val(title);
             $('#searchForm').submit();
         });
 
-        $(document).on('click', function(e) {
+        $(document).on('click', function (e) {
             if (!$(e.target).closest('#searchForm').length) {
-                $('#autocompleteList').empty();
+                $list.empty();
             }
         });
     });

@@ -28,7 +28,7 @@ public class MovieIndexer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("🎬 Elasticsearch 인덱싱 시작");
+        log.info("Elasticsearch 인덱싱 시작");
 
         int page = 0;
         int pageSize = 1000;
@@ -64,7 +64,7 @@ public class MovieIndexer implements CommandLineRunner {
             page++;
         } while (!result.isLast());
 
-        log.info("🎉 인덱싱 완료 - 총 {}건", totalIndexed);
+        log.info("인덱싱 완료 - 총 {}건", totalIndexed);
     }
 }
 
