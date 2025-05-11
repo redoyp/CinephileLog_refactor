@@ -40,7 +40,17 @@ public class MovieIndexer implements CommandLineRunner {
             List<Movie> movies = result.getContent();
 
             BulkRequest bulkRequest = new BulkRequest();
+
             for (Movie movie : movies) {
+                boolean exists = esClient.exists(
+                        new org.elasticsearch.action.get.GetRequest("movies", movie.getId().toString()),
+                        RequestOptions.DEFAULT
+                );
+
+                if (exists) {
+                    continue;
+                }
+
                 Map<String, Object> doc = new HashMap<>();
                 doc.put("movieId", movie.getId().toString());
                 doc.put("title", movie.getTitle());
@@ -53,12 +63,14 @@ public class MovieIndexer implements CommandLineRunner {
                 bulkRequest.add(indexRequest);
             }
 
-            BulkResponse response = esClient.bulk(bulkRequest, RequestOptions.DEFAULT);
-            if (response.hasFailures()) {
-                log.warn("⚠️ 일부 인덱싱 실패: {}", response.buildFailureMessage());
-            } else {
-                totalIndexed += movies.size();
-                log.info("✅ {}건 인덱싱 완료 (누적: {})", movies.size(), totalIndexed);
+            if (bulkRequest.numberOfActions() > 0) {
+                BulkResponse response = esClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+                if (response.hasFailures()) {
+                    log.warn("⚠️ 일부 인덱싱 실패: {}", response.buildFailureMessage());
+                } else {
+                    totalIndexed += bulkRequest.numberOfActions();
+                    log.info("✅ {}건 인덱싱 완료 (누적: {})", bulkRequest.numberOfActions(), totalIndexed);
+                }
             }
 
             page++;
@@ -66,5 +78,6 @@ public class MovieIndexer implements CommandLineRunner {
 
         log.info("인덱싱 완료 - 총 {}건", totalIndexed);
     }
+
 }
 
