@@ -40,12 +40,13 @@ public class AutocompleteController {
         for (SearchHit hit : response.getHits().getHits()) {
             Map<String, Object> source = hit.getSourceAsMap();
             Map<String, String> item = new HashMap<>();
-            item.put("movieId", source.get("movieId").toString());
-            item.put("title", source.get("title").toString());
-            item.put("posterUrl", source.getOrDefault("posterUrl", "").toString());
-            item.put("releaseYear", source.getOrDefault("releaseYear", "").toString());
+            item.put("movieId", String.valueOf(source.get("movieId")));
+            item.put("title", String.valueOf(source.get("title")));
+            item.put("posterUrl", source.get("posterUrl") != null ? source.get("posterUrl").toString() : "");
+            item.put("releaseYear", source.get("releaseYear") != null ? source.get("releaseYear").toString() : "");
             results.add(item);
         }
+
 
         return results;
     }
