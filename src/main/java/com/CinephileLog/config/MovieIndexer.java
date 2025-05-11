@@ -6,74 +6,65 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MovieIndexer implements CommandLineRunner {
 
     private final MovieRepository movieRepository;
     private final RestHighLevelClient esClient;
 
-    private static final String INDEX_NAME = "movies";
-
     @Override
     public void run(String... args) throws Exception {
-        log.info("Elasticsearch 인덱싱 시작");
+        log.info("🎬 Elasticsearch 인덱싱 시작");
 
-        List<Movie> allMovies = movieRepository.findAll();
-        int total = allMovies.size();
-        log.info("✔️ 총 대상 영화 수: {}", total);
+        int page = 0;
+        int pageSize = 1000;
+        Page<Movie> result;
+        long totalIndexed = 0;
 
-        long start = System.currentTimeMillis();
-        BulkRequest bulkRequest = new BulkRequest();
-        int batchSize = 1000;
-        int counter = 0;
+        do {
+            result = movieRepository.findAll(PageRequest.of(page, pageSize));
+            List<Movie> movies = result.getContent();
 
-        for (Movie movie : allMovies) {
-            GetRequest check = new GetRequest(INDEX_NAME, movie.getId().toString());
-            if (esClient.exists(check, RequestOptions.DEFAULT)) continue;
+            BulkRequest bulkRequest = new BulkRequest();
+            for (Movie movie : movies) {
+                Map<String, Object> doc = new HashMap<>();
+                doc.put("movieId", movie.getId().toString());
+                doc.put("title", movie.getTitle());
+                doc.put("posterUrl", movie.getPosterUrl());
+                doc.put("releaseYear", movie.getReleaseDate() != null ? movie.getReleaseDate().getYear() : null);
 
-            Map<String, Object> doc = new HashMap<>();
-            doc.put("movieId", movie.getId().toString());
-            doc.put("title", movie.getTitle());
-            doc.put("posterUrl", movie.getPosterUrl());
-            doc.put("releaseYear", movie.getReleaseDate() != null ? movie.getReleaseDate().getYear() : null);
-
-
-            bulkRequest.add(new IndexRequest(INDEX_NAME)
-                    .id(movie.getId().toString())
-                    .source(doc, XContentType.JSON));
-            counter++;
-
-            if (counter % batchSize == 0) {
-                BulkResponse response = esClient.bulk(bulkRequest, RequestOptions.DEFAULT);
-                if (response.hasFailures()) {
-                    log.warn("❌ 일부 문서 인덱싱 실패: {}", response.buildFailureMessage());
-                } else {
-                    log.info("✅ [{} / {}] 인덱싱 성공", counter, total);
-                }
-                bulkRequest = new BulkRequest();
+                IndexRequest indexRequest = new IndexRequest("movies")
+                        .id(movie.getId().toString())
+                        .source(doc);
+                bulkRequest.add(indexRequest);
             }
-        }
 
-        if (bulkRequest.numberOfActions() > 0) {
-            esClient.bulk(bulkRequest, RequestOptions.DEFAULT);
-            log.info("✅ 마지막 인덱싱 완료");
-        }
+            BulkResponse response = esClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+            if (response.hasFailures()) {
+                log.warn("⚠️ 일부 인덱싱 실패: {}", response.buildFailureMessage());
+            } else {
+                totalIndexed += movies.size();
+                log.info("✅ {}건 인덱싱 완료 (누적: {})", movies.size(), totalIndexed);
+            }
 
-        long end = System.currentTimeMillis();
-        log.info("인덱싱 완료 - 총 {}건 / 소요 시간: {}초", counter, (end - start) / 1000);
+            page++;
+        } while (!result.isLast());
+
+        log.info("🎉 인덱싱 완료 - 총 {}건", totalIndexed);
     }
 }
+
