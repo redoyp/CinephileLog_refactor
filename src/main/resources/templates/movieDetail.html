@@ -132,7 +132,7 @@
                                         <button
                                                 type="button"
                                                 class="delete-button btn btn-sm btn-outline-danger"
-                                                th:if="${review.user.userId == user.getUserId()}">
+                                                th:if="${review.user.userId == userId}">
                                             삭제
                                         </button>
                                     </div>
@@ -183,7 +183,7 @@
                         <button class="review-submit-btn"
                                 th:text="${hasUserReviewed ? '리뷰 수정' : '리뷰 생성'}"
                                 th:data-movie-id="${movieId}"
-                                th:data-user-id="${user.userId}"
+                                th:data-user-id="${userId}"
                                 th:data-review-id="${hasUserReviewed ? reviews[0].id : ''}">
                         </button>
 

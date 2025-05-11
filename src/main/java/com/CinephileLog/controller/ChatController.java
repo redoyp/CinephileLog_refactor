@@ -1,13 +1,12 @@
 package com.CinephileLog.controller;
 
 import com.CinephileLog.domain.ChattingRoom;
-import com.CinephileLog.domain.User;
 import com.CinephileLog.dto.ChatMessageDTO;
 import com.CinephileLog.movie.dto.MovieResponse;
 import com.CinephileLog.movie.service.MovieService;
 import com.CinephileLog.service.ChattingRoomService;
 import com.CinephileLog.service.MessageService;
-import com.CinephileLog.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -36,9 +35,6 @@ public class ChatController {
     private ChattingRoomService chattingRoomService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private MovieService movieService;
 
     @MessageMapping("/chat/send/{roomId}")
@@ -51,14 +47,16 @@ public class ChatController {
 
 
     @GetMapping("/chatroom/{movieId}")
-    public String enterChatRoom(@PathVariable Long movieId, Model model,@AuthenticationPrincipal OAuth2User oAuth2User) {
-        Long userId = oAuth2User.getAttribute("userId");
-        User user = userService.getUserById(userId);
+    public String enterChatRoom(@PathVariable Long movieId, Model model, @AuthenticationPrincipal OAuth2User oAuth2User, HttpSession session) {
+        //For header fragment - additional attribute
+        model.addAttribute("gradeName", session.getAttribute("gradeName").toString());
+        model.addAttribute("roleName", session.getAttribute("roleName").toString());
+
         ChattingRoom room = chattingRoomService.findOrCreateByMovieId(movieId);
         MovieResponse movie = movieService.getMovieDetail(movieId);
         model.addAttribute("roomId", room.getRoomId());
-        model.addAttribute("userId", user.getUserId());
-        model.addAttribute("nickname", user.getNickname());
+        model.addAttribute("userId", oAuth2User.getAttribute("userId"));
+        model.addAttribute("nickname", session.getAttribute("nickname").toString());
         model.addAttribute("movieId", movieId);
         model.addAttribute("movieTitle", movie.getTitle());
         model.addAttribute("posterUrl", movie.getPosterUrl());

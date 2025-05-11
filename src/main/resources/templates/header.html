@@ -9,16 +9,16 @@
                 <h4 class="font-weight-bold site-name">CinePhiLog</h4>
             </a>
             <div th:if="${showMenu}" class="col-9 nav-menu">
-                <div th:if="${user != null}" class="d-flex align-items-center">
+                <div th:if="${userId != null}" class="d-flex align-items-center">
                     <div>
-                        <img class="pr-0 member-badge-icon" th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}"/>
-                        <span class="pl-0"th:text="${user.nickname}"></span>
+                        <img class="pr-0 member-badge-icon" th:src="@{/images/badge_{imageName}.png(imageName=${gradeName})}"/>
+                        <span class="pl-0"th:text="${nickname}"></span>
                     </div>
                     <a class="menu-link mr-2" th:href="@{/profile}">내 프로필</a>
-                    <a class="menu-link mr-2" th:if="${user.role.toString() == 'ROLE_ADMIN'}" th:href="@{/admin}">관리자</a>
+                    <a class="menu-link mr-2" th:if="${roleName == 'ROLE_ADMIN'}" th:href="@{/admin}">관리자</a>
                     <a class="nav-menu-button" th:href="@{/userLogout}">로그아웃</a>
                 </div>
-                <div th:if="${user == null}">
+                <div th:if="${userId == null}">
                     <a class="nav-menu-button" th:href="@{/login}">로그인</a>
                 </div>
                 <a class="menu-link" th:href="@{/gradeInfo}">등급 소개</a>

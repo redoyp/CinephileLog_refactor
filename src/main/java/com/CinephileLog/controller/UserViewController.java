@@ -4,6 +4,7 @@ import com.CinephileLog.domain.User;
 import com.CinephileLog.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -100,13 +101,19 @@ public class UserViewController {
     }
 
     @GetMapping("/checkNickname")
-    public String checkNickname(@AuthenticationPrincipal OAuth2User user) {
+    public String checkNickname(@AuthenticationPrincipal OAuth2User user, HttpSession session) {
         User userInfo = userService.getUserById(user.getAttribute("userId"));
+
+        session.setAttribute("userId", user.getAttribute("userId"));
+        session.setAttribute("gradeName", userInfo.getGrade().getGradeName());
+        session.setAttribute("roleName", userInfo.getRole());
+
         if (userInfo.getNickname() == null) {
             return "redirect:/setUpNickname";   //redirect to set up nickname page if user hasn't set up
+        } else {
+            session.setAttribute("nickname", userInfo.getNickname());
+            return "redirect:/home";
         }
-
-        return "redirect:/home";
     }
 
     @GetMapping("/setUpNickname")
@@ -118,10 +125,18 @@ public class UserViewController {
     }
 
     @GetMapping("/profile")
-    public String myProfileView(@AuthenticationPrincipal OAuth2User user, Model model) {
+    public String myProfileView(@AuthenticationPrincipal OAuth2User user, Model model, HttpSession session) {
+        //For data - get user info from DB
         User userInfo = userService.getUserById(user.getAttribute("userId"));
         model.addAttribute("user", userInfo);
+
+        //For header fragment - get user info from http session
+        model.addAttribute("userId",user.getAttribute("userId"));
+        model.addAttribute("nickname",session.getAttribute("nickname").toString());
+        model.addAttribute("gradeName",session.getAttribute("gradeName").toString());
+        model.addAttribute("roleName",session.getAttribute("roleName").toString());
         model.addAttribute("showMenu", true);
+
         return "myProfile";
     }
 }

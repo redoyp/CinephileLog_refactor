@@ -1,13 +1,12 @@
 package com.CinephileLog.controller;
 
-import com.CinephileLog.domain.User;
 import com.CinephileLog.external.TmdbClient;
 import com.CinephileLog.external.dto.TmdbMovie;
 import com.CinephileLog.movie.dto.MovieResponse;
 import com.CinephileLog.movie.service.MovieService;
 import com.CinephileLog.review.dto.ReviewResponse;
 import com.CinephileLog.review.service.ReviewService;
-import com.CinephileLog.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -18,14 +17,11 @@ import java.util.*;
 
 @Controller
 public class HomeViewController {
-
-    private final UserService userService;
     private final MovieService movieService;
     private final ReviewService reviewService;
     private final TmdbClient tmdbClient;
 
-    public HomeViewController(UserService userService, MovieService movieService, ReviewService reviewService, TmdbClient tmdbClient) {
-        this.userService = userService;
+    public HomeViewController(MovieService movieService, ReviewService reviewService, TmdbClient tmdbClient) {
         this.movieService = movieService;
         this.reviewService = reviewService;
         this.tmdbClient = tmdbClient;
@@ -36,10 +32,12 @@ public class HomeViewController {
     }
 
     @GetMapping("/home")
-    public String homeView(@AuthenticationPrincipal OAuth2User user, Model model) {
+    public String homeView(@AuthenticationPrincipal OAuth2User user, Model model, HttpSession session) {
         if (user != null) {
-            User userInfo = userService.getUserById(user.getAttribute("userId"));
-            model.addAttribute("user", userInfo);
+            model.addAttribute("userId", user.getAttribute("userId"));
+            model.addAttribute("nickname", session.getAttribute("nickname").toString());
+            model.addAttribute("gradeName", session.getAttribute("gradeName").toString());
+            model.addAttribute("roleName", session.getAttribute("roleName").toString());
         }
 
         //Get top 3 movies by popularity
@@ -60,7 +58,6 @@ public class HomeViewController {
         model.addAttribute("reviewsOfTopPopularity", reviewsOfTopPopularity);
         model.addAttribute("reviewCountOfTopPopularity", reviewCountOfTopPopularity);
 
-
         //Get top 3 movies by review
         List<Long> topReviewMovieList = reviewService.findTop3MovieIdsByReview();
         List<MovieResponse> moviesOfTopReview = topReviewMovieList.stream()
@@ -77,7 +74,6 @@ public class HomeViewController {
         model.addAttribute("moviesOfTopReview", moviesOfTopReview);
         model.addAttribute("reviewsOfTopReview", reviewsOfTopReview);
         model.addAttribute("reviewCountOfTopReview", reviewCountOfTopReview);
-
 
         return "index";
     }

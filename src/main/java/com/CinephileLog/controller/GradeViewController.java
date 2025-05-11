@@ -1,7 +1,6 @@
 package com.CinephileLog.controller;
 
-import com.CinephileLog.domain.User;
-import com.CinephileLog.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -12,18 +11,15 @@ import java.util.*;
 
 @Controller
 public class GradeViewController {
-    private final UserService userService;
-
-    public GradeViewController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping("/gradeInfo")
-    public String gradeDescView(@AuthenticationPrincipal OAuth2User user, Model model) {
-        //For header
+    public String gradeDescView(@AuthenticationPrincipal OAuth2User user, Model model, HttpSession session) {
+        //For header fragment
         if (user != null) {
-            User userInfo = userService.getUserById(user.getAttribute("userId"));
-            model.addAttribute("user", userInfo);
+            model.addAttribute("userId", user.getAttribute("userId"));
+            model.addAttribute("nickname", session.getAttribute("nickname").toString());
+            model.addAttribute("gradeName", session.getAttribute("gradeName").toString());
+            model.addAttribute("roleName", session.getAttribute("roleName").toString());
         }
         model.addAttribute("showMenu", true);
 
