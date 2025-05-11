@@ -60,10 +60,10 @@
     </div>
 </div>
 
-<!-- JS 로딩 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    $(function () {
         const $input = $('#searchInput');
         const $list = $('#autocompleteList');
 
@@ -75,6 +75,8 @@
                 $list.empty();
                 return;
             }
+
+            console.log("🔍 자동완성 요청:", keyword);
 
             $.ajax({
                 url: '/autocomplete',
@@ -91,12 +93,15 @@
                         const li = `
                         <li class="list-group-item autocomplete-item" data-title="${item.title}">
                             <div class="d-flex align-items-center">
-                                <img src="${item.posterUrl}" alt="poster">
+                                <img src="${item.posterUrl || ''}" alt="poster" onerror="this.src='/images/default.png'">
                                 <span>${item.title} (${item.releaseYear || ''})</span>
                             </div>
                         </li>`;
                         $list.append(li);
                     });
+                },
+                error: function (xhr, status, error) {
+                    console.error("❌ 자동완성 에러:", error);
                 }
             });
         });
@@ -114,5 +119,4 @@
         });
     });
 </script>
-</body>
 </html>
