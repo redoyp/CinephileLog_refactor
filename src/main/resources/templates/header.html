@@ -1,46 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>CinePhiLog</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-    <style>
-        #autocompleteList {
-            position: absolute;
-            z-index: 1000;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            background-color: white;
-        }
-        .autocomplete-item:hover {
-            background-color: #f0f0f0;
-            cursor: pointer;
-        }
-        .autocomplete-item img {
-            height: 40px;
-            margin-right: 10px;
-        }
-    </style>
-</head>
-<body>
 <div th:fragment="siteHeader">
-    <div id="nav-bar">
-        <div class="row align-items-center">
+    <div id="nav-bar" class="container-fluid py-2">
+        <div class="row align-items-center no-gutters">
             <a href="/home" class="col-3 d-flex align-items-center">
                 <img src="/images/picture_logo.png" class="ml-2 logo"/>
                 <h4 class="font-weight-bold site-name">CinePhiLog</h4>
             </a>
-            <div class="col-6 position-relative">
-                <form th:action="@{/search}" method="get" class="d-flex" id="searchForm">
+            <div class="col-5 d-flex justify-content-center">
+                <form th:action="@{/search}" method="get" class="d-flex w-100" style="max-width: 500px; position: relative;" id="searchForm">
                     <input type="text" name="keyword" id="searchInput"
                            class="form-control mr-2" placeholder="영화 제목을 입력하세요" autocomplete="off" required/>
                     <button type="submit" class="btn btn-outline-primary">검색</button>
-                    <ul id="autocompleteList" class="list-group w-100"></ul>
+                    <ul id="autocompleteList" class="list-group w-100" style="position: absolute; top: 100%; z-index: 1000;"></ul>
                 </form>
             </div>
-
-            <div th:if="${showMenu}" class="col-3 nav-menu">
+            <div th:if="${showMenu}" class="col-4 nav-menu">
                 <div th:if="${userId != null}" class="d-flex align-items-center">
                     <div>
                         <img class="pr-0 member-badge-icon"
@@ -58,65 +31,6 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/autocomplete.js"></script>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</body>
-<script>
-    $(function () {
-        const $input = $('#searchInput');
-        const $list = $('#autocompleteList');
-
-        $input.on('keyup', function () {
-            const keyword = $input.val();
-
-            if ((/[a-zA-Z]/.test(keyword) && keyword.length < 3) ||
-                (/[\u3131-\uD79D]/.test(keyword) && keyword.length < 2)) {
-                $list.empty();
-                return;
-            }
-
-            console.log("🔍 자동완성 요청:", keyword);
-
-            $.ajax({
-                url: '/autocomplete',
-                data: { keyword },
-                success: function (data) {
-                    $list.empty();
-
-                    if (data.length === 0) {
-                        $list.append('<li class="list-group-item text-muted">검색 결과 없음</li>');
-                        return;
-                    }
-
-                    data.forEach(item => {
-                        const li = `
-                        <li class="list-group-item autocomplete-item" data-title="${item.title}">
-                            <div class="d-flex align-items-center">
-                                <img src="${item.posterUrl || ''}" alt="poster" onerror="this.src='/images/default.png'">
-                                <span>${item.title} (${item.releaseYear || ''})</span>
-                            </div>
-                        </li>`;
-                        $list.append(li);
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error("❌ 자동완성 에러:", error);
-                }
-            });
-        });
-
-        $list.on('click', '.autocomplete-item', function () {
-            const title = $(this).data('title');
-            $input.val(title);
-            $('#searchForm').submit();
-        });
-
-        $(document).on('click', function (e) {
-            if (!$(e.target).closest('#searchForm').length) {
-                $list.empty();
-            }
-        });
-    });
-</script>
-</html>
