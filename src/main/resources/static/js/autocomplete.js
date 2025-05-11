@@ -25,15 +25,22 @@ $(function () {
                 }
 
                 data.forEach(item => {
+                    const hasPoster = item.posterUrl;
+                    const imageTag = hasPoster
+                        ? `<img src="https://image.tmdb.org/t/p/w92${item.posterUrl}" alt="poster">`
+                        : '';
+
                     const li = `
-                    <li class="list-group-item autocomplete-item" data-title="${item.title}">
-                        <div class="d-flex align-items-center">
-                            <img src="${item.posterUrl || ''}" alt="poster" onerror="this.src='/images/default.png'">
-                            <span>${item.title} (${item.releaseYear || ''})</span>
-                        </div>
-                    </li>`;
+                        <li class="list-group-item autocomplete-item" data-title="${item.title}">
+                            <div class="d-flex align-items-center">
+                                ${imageTag}
+                                <span>${item.title} (${item.releaseYear || ''})</span>
+                            </div>
+                        </li>`;
                     $list.append(li);
                 });
+
+
             },
             error: function (xhr, status, error) {
                 console.error("자동완성 에러:", error);
