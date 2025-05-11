@@ -30,7 +30,7 @@ public class AutocompleteController {
 
         SearchRequest request = new SearchRequest("movies");
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
-                .query(QueryBuilders.matchPhrasePrefixQuery("title", keyword))
+                .query(QueryBuilders.prefixQuery("title", keyword.toLowerCase()))
                 .size(10);
 
         request.source(sourceBuilder);

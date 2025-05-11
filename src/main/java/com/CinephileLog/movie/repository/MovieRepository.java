@@ -4,6 +4,9 @@ import com.CinephileLog.movie.domain.Movie;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +15,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Optional<Movie> findById(Long movieId);
     List<Movie> findByTitleContainingIgnoreCase(String keyword);
     List<Movie> findByIdIn(List<Long> ids);
+    Slice<Movie> findAllBy(Pageable pageable);
+
 }

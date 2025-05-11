@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.action.index.IndexRequest;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -32,24 +34,24 @@ public class MovieIndexer implements CommandLineRunner {
 
         int page = 0;
         int pageSize = 1000;
-        Page<Movie> result;
         long totalIndexed = 0;
 
+        Slice<Movie> result;
+
         do {
-            result = movieRepository.findAll(PageRequest.of(page, pageSize));
+            Pageable pageable = PageRequest.of(page, pageSize);
+            result = movieRepository.findAllBy(pageable);
             List<Movie> movies = result.getContent();
 
             BulkRequest bulkRequest = new BulkRequest();
 
             for (Movie movie : movies) {
+                // ES에 이미 존재하면 건너뜀
                 boolean exists = esClient.exists(
-                        new org.elasticsearch.action.get.GetRequest("movies", movie.getId().toString()),
+                        new GetRequest("movies", movie.getId().toString()),
                         RequestOptions.DEFAULT
                 );
-
-                if (exists) {
-                    continue;
-                }
+                if (exists) continue;
 
                 Map<String, Object> doc = new HashMap<>();
                 doc.put("movieId", movie.getId().toString());
@@ -74,10 +76,9 @@ public class MovieIndexer implements CommandLineRunner {
             }
 
             page++;
-        } while (!result.isLast());
+
+        } while (result.hasNext());
 
         log.info("인덱싱 완료 - 총 {}건", totalIndexed);
     }
-
 }
-
