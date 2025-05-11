@@ -119,6 +119,92 @@ html {
     right: 30%;
 }
 
+/* hand pointer start*/
+.point-down-container {
+    position: relative;
+    display: inline-block;
+    height: 80px;
+    cursor: pointer;
+}
+
+.point-down-container img {
+    width: 100%;
+    display: block;
+}
+
+.point-down {
+    height: 80px;
+    width: auto;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+}
+
+.bouncing-img {
+    animation: bounce 1s infinite;
+}
+
+.point-down-text {
+    position: absolute;
+    top: 50%;
+    left: calc(50% - 7px);
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+/* hand pointer end*/
+
+/* link image start*/
+.link-img-container {
+    display: flex;
+    gap: 45px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    text-align: center;
+}
+
+.link-img-wrapper {
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+}
+
+.link-img {
+    height: 100px;
+    width: auto;
+    display: block;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.link-img:hover {
+    transform: scale(1.15);
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.5);
+}
+
+.link-img-text {
+    margin-top: 8px;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* link image end*/
+
 .content-img {
     position: absolute;
     left: calc(50vw - 100px);

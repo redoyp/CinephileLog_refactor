@@ -29,11 +29,6 @@ a {
     overflow-x: hidden;
 }
 
-.member-badge-icon {
-    width: 50px;
-    height: auto;
-}
-
 #main-content {
     height: calc(100vh - 65px);
     caret-color: transparent;
@@ -142,5 +137,11 @@ a {
 .logo {
     height: 50px;
     width: auto;
+}
+
+.member-badge-icon {
+    height: 50px;
+    width: auto;
+    max-height: 50px;
 }
 /* for header end */

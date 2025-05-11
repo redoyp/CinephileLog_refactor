@@ -18,12 +18,34 @@
         <div class="circle circle5"></div>
         <div class="circle circle6"></div>
         <div class="centered-row">
-            <div class="white-text site-name-text">CinePhiloG.</div>
-            <div th:if="${user == null}">
-                <a class="btn btn-primary" th:href="@{/login}">로그인</a>
+            <div class="mb-5 link-img-container">
+                <div class="link-item">
+                    <a th:if="${user == null}" th:href="@{/login}" class="link-img-wrapper">
+                        <img th:src="@{/images/ticket_image.png}" class="link-img"/>
+                        <span class="link-img-text">로그인</span>
+                    </a>
+                    <a th:if="${user != null}" th:href="@{/logout}">
+                        <img th:src="@{/images/ticket_image.png}" class="link-img"/>
+                        <span class="link-img-text">로그아웃</span>
+                    </a>
+                </div>
+                <div class="link-item" onclick="document.getElementById('main-area2').scrollIntoView({ behavior: 'smooth' });">
+                    <div class="link-img-wrapper" style="cursor:pointer;">
+                        <img th:src="@{/images/clapperboard_image.png}" class="link-img"/>
+                        <span class="link-img-text">인기 영화</span>
+                    </div>
+                </div>
+                <div class="link-item">
+                    <a th:href="@{/gradeInfo}" class="link-img-wrapper">
+                        <img th:src="@{/images/popcorn_bucket_image.png}" class="link-img"/>
+                        <span class="link-img-text">등급 소개</span>
+                    </a>
+                </div>
             </div>
-            <div th:if="${user != null}">
-                <a class="btn btn-danger" th:href="@{/logout}">로그아웃</a>
+            <div class="mb-5 white-text site-name-text">CinePhiloG.</div>
+            <div class="point-down-container" onclick="document.getElementById('main-area2').scrollIntoView({ behavior: 'smooth' });">
+                <img th:src="@{/images/point_down_image.png}" class="point-down bouncing-img"/>
+                <div class="point-down-text">더보기</div>
             </div>
         </div>
     </div>

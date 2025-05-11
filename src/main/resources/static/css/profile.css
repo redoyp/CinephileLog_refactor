@@ -26,6 +26,6 @@ body {
     width: 100%;
     max-width: 100px;
     transform: rotate(45deg);
-    position: fixed;
+    position: absolute;
     margin-right: -50px;
 }

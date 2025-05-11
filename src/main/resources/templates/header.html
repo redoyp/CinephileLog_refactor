@@ -10,8 +10,10 @@
             </a>
             <div th:if="${showMenu}" class="col-9 nav-menu">
                 <div th:if="${user != null}" class="d-flex align-items-center">
-                    <img th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}" class="member-badge-icon"/>
-                    <span th:text="${user.nickname}"></span>
+                    <div>
+                        <img class="pr-0 member-badge-icon" th:src="@{/images/badge_{imageName}.png(imageName=${user.getGrade().getGradeName()})}"/>
+                        <span class="pl-0"th:text="${user.nickname}"></span>
+                    </div>
                     <a class="menu-link mr-2" th:href="@{/profile}">내 프로필</a>
                     <a class="menu-link mr-2" th:if="${user.role.toString() == 'ROLE_ADMIN'}" th:href="@{/admin}">관리자</a>
                     <a class="nav-menu-button" th:href="@{/userLogout}">로그아웃</a>
