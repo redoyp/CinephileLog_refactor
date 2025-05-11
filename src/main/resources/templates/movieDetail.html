@@ -20,7 +20,7 @@
                 <img src="/images/border-end-img.png" class="border-end-img-vertical border-end-img-bottom">
 
                 <div class="mb-3 image-box d-flex justify-content-center align-items-center">
-                    <img th:src="${movie.posterUrl}" alt="영화 포스터" class="poster-img"/>
+                    <img th:src="'https://image.tmdb.org/t/p/w500' + ${movie.posterUrl}" alt="영화 포스터" class="poster-img"/>
                 </div>
 
                 <!-- 가로 구분선 -->

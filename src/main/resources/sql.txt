@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS review_like;
 DROP TABLE IF EXISTS user_score;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS grade;
+DROP TABLE IF EXISTS column_article;
 
 -- 회원 등급
 CREATE TABLE grade (

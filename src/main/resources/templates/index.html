@@ -29,11 +29,13 @@
                         <span class="link-img-text">로그아웃</span>
                     </a>
                 </div>
-                <div class="link-item" onclick="document.getElementById('main-area2').scrollIntoView({ behavior: 'smooth' });">
-                    <div class="link-img-wrapper" style="cursor:pointer;">
-                        <img th:src="@{/images/clapperboard_image.png}" class="link-img"/>
-                        <span class="link-img-text">인기 영화</span>
-                    </div>
+                <div class="link-item">
+                    <a th:href="@{/column}" class="link-img-wrapper">
+                        <div class="link-img-wrapper" style="cursor:pointer;">
+                            <img th:src="@{/images/clapperboard_image.png}" class="link-img"/>
+                            <span class="link-img-text">영화 칼럼</span>
+                        </div>
+                    </a>
                 </div>
                 <div class="link-item">
                     <a th:href="@{/gradeInfo}" class="link-img-wrapper">

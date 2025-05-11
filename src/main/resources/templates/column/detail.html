@@ -13,7 +13,7 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-3">
-        <img th:src="'https://image.tmdb.org/t/p/w500' + ${column.posterUrl}" class="img-fluid rounded shadow" alt="영화 포스터">
+        <a th:href="@{/movieDetail/{id}(id=${column.movieId})}"><img th:src="'https://image.tmdb.org/t/p/w500' + ${column.posterUrl}" class="img-fluid rounded shadow" alt="영화 포스터"></a>
       </div>
       <div class="col-md-9">
         <h2 th:text="${column.title}">칼럼 제목</h2>
@@ -27,7 +27,7 @@
           조회수: <span th:text="${column.viewCount}"></span>
         </div>
         <hr>
-        <div th:text="${column.content}" style="white-space: pre-line;"></div>
+        <div th:text="${column.content}" style="white-space: pre-line; margin-bottom: 168px"></div>
         <hr>
         <a href="/column" class="btn btn-secondary">목록으로</a>
         <a th:href="@{/column/edit/{id}(id=${column.columnId})}" class="btn btn-primary">수정</a>
