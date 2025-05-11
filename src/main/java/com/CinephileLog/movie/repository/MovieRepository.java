@@ -11,5 +11,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @EntityGraph(attributePaths = {"genres"}) // 'genres' 컬렉션을 즉시 로딩
     Optional<Movie> findById(Long movieId);
     List<Movie> findByTitleContainingIgnoreCase(String keyword);
-
+    List<Movie> findByIdIn(List<Long> ids);
 }

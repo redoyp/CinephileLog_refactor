@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>검색 결과</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+  <h4 th:text="'검색 결과: ' + ${keyword}"></h4>
+  <p th:if="${message}" th:text="${message}" class="text-danger"></p>
+
+  <div class="row mt-3" th:if="${#lists.isEmpty(results)}">
+    <p>검색 결과가 없습니다.</p>
+  </div>
+
+  <div class="row" th:each="movie : ${results}">
+    <div class="col-md-3 mb-4">
+      <a th:href="@{/movie/{id}(id=${movie.id})}" class="text-decoration-none">
+        <img class="img-fluid" th:src="${movie.posterUrl}" alt="poster"/>
+        <h6 class="mt-2" th:text="${movie.title}">제목</h6>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
