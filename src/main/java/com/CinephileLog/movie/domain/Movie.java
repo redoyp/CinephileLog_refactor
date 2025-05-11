@@ -61,7 +61,7 @@ public class Movie implements Serializable {
     @Column(name = "cast")
     private String cast;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_genre",
             joinColumns = @JoinColumn(name = "movie_id"),
