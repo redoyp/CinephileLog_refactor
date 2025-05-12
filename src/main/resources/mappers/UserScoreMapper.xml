@@ -15,6 +15,7 @@
         GROUP BY u.user_id
         HAVING COUNT(r.review_id) >= 50
     </select>
+
     <insert id="upsertUserScore" parameterType="com.CinephileLog.dto.UserScoreDTO">
         INSERT INTO user_score (user_id, review_count, like_count, weighted_score)
         VALUES (#{userId}, #{reviewCount}, #{likeCount}, #{weightedScore})

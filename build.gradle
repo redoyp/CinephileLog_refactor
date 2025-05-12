@@ -70,7 +70,7 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     // 개발용
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     // 테스트
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
