@@ -92,17 +92,8 @@ class GradeServiceTest {
         long popcorn = all.stream().filter(u -> u.getGrade().getGradeId() == 5L).count();
         long hotdog = all.stream().filter(u -> u.getGrade().getGradeId() == 4L).count();
         long downgraded = all.stream().filter(u -> u.getGrade().getGradeId() == 3L).count();
-
-        System.out.printf("Popcorn: %d명, Hotdog: %d명, Nachos 강등: %d명%n", popcorn, hotdog, downgraded);
         List<User> allList = userRepository.findAll();
         allList.sort(Comparator.comparing(u -> u.getGrade().getGradeId()));
-        System.out.println("[최종 유저 등급 결과]");
-        for (User u : allList) {
-            System.out.printf(" %s | ID: %d | 등급: %s (%d)%n",
-                    u.getNickname(), u.getUserId(),
-                    u.getGrade().getGradeName(), u.getGrade().getGradeId()
-            );
-        }
 
         assertThat(popcorn).isEqualTo(2);
         assertThat(hotdog).isEqualTo(3);

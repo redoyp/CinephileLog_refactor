@@ -4,6 +4,7 @@ import com.CinephileLog.movie.domain.Movie;
 import com.CinephileLog.movie.repository.MovieRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TmdbApiClient {
     private final MovieRepository movieRepository;
     private final Set<Long> cachedMovieIds = ConcurrentHashMap.newKeySet();
@@ -49,7 +51,7 @@ public class TmdbApiClient {
     public void preloadMovieIds() {
         List<Long> existingIds = movieRepository.findAllIds();
         cachedMovieIds.addAll(existingIds);
-        System.out.println("✅ 캐시 완료 - 총 ID 수: " + cachedMovieIds.size());
+        log.info("✅ 캐시 완료 - 총 ID 수: {}", cachedMovieIds.size());
     }
 
     public Optional<Movie> fetchMovieById(int id, String apiKey) {
@@ -145,9 +147,9 @@ public class TmdbApiClient {
             return Optional.of(movie);
 
         } catch (WebClientResponseException.NotFound e) {
-            System.out.println("🔍 존재하지 않는 ID (404): " + id);
+            log.info("\uD83D\uDD0D 존재하지 않는 ID (404): {}", id);
         } catch (Exception e) {
-            System.err.println("TMDB 요청 실패 ID=" + id + " → " + e.getMessage());
+            log.info("TMDB 요청 실패 ID={} → {}", id, e.getMessage());
         }
 
         return Optional.empty();
