@@ -5,7 +5,7 @@
                 <img src="/images/picture_logo.png" class="ml-2 logo"/>
                 <h4 class="font-weight-bold site-name">CinePhiLog</h4>
             </a>
-            <div class="col-4 d-flex justify-content-center">
+            <div th:if="${showMenu}" class="col-4 d-flex justify-content-center">
                 <form th:action="@{/search}" method="get" class="d-flex w-100" style="max-width: 500px; position: relative;" id="searchForm">
                     <input type="text" name="keyword" id="searchInput"
                            class="form-control mr-2" placeholder="영화 제목을 입력하세요" autocomplete="off" required/>
