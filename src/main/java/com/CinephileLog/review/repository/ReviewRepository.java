@@ -7,9 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    @Query("SELECT r FROM Review r WHERE r.user.userId = :userId AND r.movie.id = :movieId AND r.blinded = false")
-    boolean existsByUser_UserIdAndMovie_id(Long userId, Long movieId);
-
     @Query("SELECT r FROM Review r WHERE r.movie.id = :movieId AND r.blinded = false")
     List<Review> findAllByMovie_Id(Long movieId);
 
@@ -24,6 +21,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("SELECT r FROM Review r WHERE r.user.nickname = :nickname AND r.blinded = false")
     List<Review> findAllByUser_Nickname(String nickname);
+
+    @Query("SELECT COUNT(r) > 0 FROM Review r WHERE r.user.userId = :userId AND r.movie.id = :movieId AND r.blinded = false")
+    boolean existsByUser_UserIdAndMovie_idAndBlindedFalse(Long userId, Long movieId);
 
     @Query("SELECT r FROM Review r WHERE r.user.userId = :userId AND r.blinded = false")
     int countByUserUserId(Long userId);
@@ -42,5 +42,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "ORDER BY MAX(r.like_count) DESC " +
             "LIMIT 3", nativeQuery = true)
     List<Long> findTop3MovieIdsByReview();
-
 }

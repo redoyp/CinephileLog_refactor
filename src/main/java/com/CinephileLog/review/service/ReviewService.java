@@ -41,8 +41,9 @@ public class ReviewService {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("영화 없음"));
 
-        if(reviewRepository.existsByUser_UserIdAndMovie_id(userId, movie.getId())) {
-            throw new IllegalArgumentException("이미 해당 영화에 대한 리뷰를 작성했습니다");
+        // 이미 (blinded = false) 리뷰가 있는지 확인
+        if (reviewRepository.existsByUser_UserIdAndMovie_idAndBlindedFalse(userId, movieId)) {
+            throw new IllegalArgumentException("이미 해당 영화에 대한 리뷰를 작성했습니다.");
         }
 
         validateRating(request.getRating());
@@ -218,10 +219,26 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
+    // 이전에 작성한 리뷰를 블라인드한 후에 유저가 동일한 영화에 리뷰를 다시 또 작성하면
+    // 이전에 블라인드 되었던 리뷰를 블라인드 해제할 수 없고,
+    // 만약에 블라인드 후 유저가 그 이후에 리뷰를 작성한 적이 없는데 관리자가 블라인드 해제하려고 하면 해제가 된다 => 결론: 리뷰는 항상 영화 당 하나로 유지!
+
+    // After a user's review is hidden, if that same user writes another review for the same movie,
+    // the previously hidden review cannot be unhidden.
+    // However, if a user's review is hidden, and they haven't written any new reviews for that movie since,
+    // then an administrator can unhide the original review.
+    // The main idea is that we only want to keep one active review per user for each movie at any time.
+    @Transactional
     public void unblindReview(Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 리뷰가 존재하지 않습니다."));
-        review.setBlinded(false); // 블라인드 해제 상태로 변경
+
+        // 해당 유저가 해당 영화에 이미 (blinded = false) 리뷰를 작성했는지 확인
+        if (reviewRepository.existsByUser_UserIdAndMovie_idAndBlindedFalse(review.getUser().getUserId(), review.getMovie().getId())) {
+            throw new IllegalStateException("해당 영화에 이미 리뷰가 있는 회원의 블라인드된 리뷰는 해제할 수 없습니다.");
+        }
+
+        review.setBlinded(false);
         reviewRepository.save(review);
     }
 }
