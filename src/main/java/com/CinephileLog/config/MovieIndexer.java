@@ -46,7 +46,6 @@
 //            BulkRequest bulkRequest = new BulkRequest();
 //
 //            for (Movie movie : movies) {
-//                // ES에 이미 존재하면 건너뜀
 //                boolean exists = esClient.exists(
 //                        new GetRequest("movies", movie.getId().toString()),
 //                        RequestOptions.DEFAULT
@@ -74,11 +73,8 @@
 //                    log.info("✅ {}건 인덱싱 완료 (누적: {})", bulkRequest.numberOfActions(), totalIndexed);
 //                }
 //            }
-//
 //            page++;
-//
 //        } while (result.hasNext());
-//
 //        log.info("인덱싱 완료 - 총 {}건", totalIndexed);
 //    }
 //}

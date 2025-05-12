@@ -46,8 +46,6 @@ public class AutocompleteController {
             item.put("releaseYear", source.get("releaseYear") != null ? source.get("releaseYear").toString() : "");
             results.add(item);
         }
-
-
         return results;
     }
 }

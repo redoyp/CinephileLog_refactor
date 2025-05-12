@@ -63,9 +63,9 @@ public class ColumnArticleService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("사용자 없음"));
 
-//        if (user.getGrade().getGradeId() > 4) {
-//            throw new AccessDeniedException("4등급 이상만 작성할 수 있습니다.");
-//        }
+        if (user.getGrade().getGradeId() > 4) {
+            throw new AccessDeniedException("4등급 이상만 작성할 수 있습니다.");
+        }
 
         Movie movie = movieRepository.findById(request.getMovieId())
                 .orElseThrow(() -> new RuntimeException("영화 없음"));
