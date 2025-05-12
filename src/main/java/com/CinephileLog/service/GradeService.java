@@ -72,31 +72,25 @@ public class GradeService {     // 사용자 등급 조회
 
 
 
-    @Scheduled(cron = "0 0 0 * * MON") // 매주 월요일 0시 실행
+    @Scheduled(cron = "0 0 0 * * MON")
     @Transactional
     public void weeklyGradeReevaluation() {
-        List<UserScoreDTO> users = userScoreMapper.selectEligibleUsers(); // reviewCount >= 50 유저만 조회
-
+        List<UserScoreDTO> users = userScoreMapper.selectEligibleUsers();
         for (UserScoreDTO u : users) {
             double score = u.getReviewCount() * 0.3 + u.getLikeCount() * 0.7;
             u.setWeightedScore(score);
             userScoreMapper.upsertUserScore(u);
             userRepository.updateUserPoint(u.getUserId(), (long) score);
         }
-
         users.sort(Comparator.comparingDouble(UserScoreDTO::getWeightedScore).reversed());
-
         int top10 = Math.max(1, (int) Math.ceil(users.size() * 0.10));
         int top5 = Math.max(1, (int) Math.ceil(users.size() * 0.05));
-
         Set<Long> hotdogIds = new HashSet<>();
         Set<Long> popcornIds = new HashSet<>();
-
         for (int i = 0; i < users.size(); i++) {
             if (i < top10) hotdogIds.add(users.get(i).getUserId());
             if (i < top5) popcornIds.add(users.get(i).getUserId());
         }
-
         for (UserScoreDTO dto : users) {
             Long id = dto.getUserId();
             if (popcornIds.contains(id)) {
