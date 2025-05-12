@@ -10,7 +10,7 @@
 <body>
 <div class="scroll-container">
 <section id="main-area1" class="scroll-section">
-    <div id="#main-content" class="solid-bg">
+    <div id="index-main-content" class="solid-bg">
         <div class="circle circle1"></div>
         <div class="circle circle2"></div>
         <div class="circle circle3"></div>
@@ -72,26 +72,28 @@
                 <h3 class="mb-3 white-text font-weight-bold">영화 순위</h3>
                 <div th:each="moviePopular : ${moviesOfTopPopularity}">
                     <div class="row mb-3">
-                        <a th:href="@{'/movieDetail/' + ${moviePopular.id}}" class="movie-link white-text">
-                            <div class="col-sm-6">
+                        <div class="col-sm-6">
+                            <a th:href="@{'/movieDetail/' + ${moviePopular.id}}" class="movie-link white-text">
                                 <img th:src="'https://image.tmdb.org/t/p/w500' + ${moviePopular.posterUrl}" class="movie-poster-img"/>
-                            </div>
-                            <div class="col-sm-6 movie-info-box">
+                            </a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a th:href="@{'/movieDetail/' + ${moviePopular.id}}" class="movie-info-box movie-link white-text d-block">
                                 <div th:text="${moviePopular.title}" class="movieTitle"></div>
                                 <div th:text="'조회수 ' + ${reviewCountOfTopPopularity[moviePopular.id]} + ' 회'" class="reviewCount"></div>
                                 <span th:each="i : ${#numbers.sequence(1, 10)}"
-                                      th:text="${i <= moviePopular.rating} ? '★' : '☆'"
-                                      th:style="${i <= moviePopular.rating}
-                                                  ? 'color: gold; text-shadow: 0 0 1px black, 0 0 1px black;'
-                                                  : 'color: lightgray; text-shadow: 0 0 1px black, 0 0 1px black;'">
+                                        th:text="${i <= moviePopular.rating} ? '★' : '☆'"
+                                        th:style="${i <= moviePopular.rating}
+                                                    ? 'color: gold; text-shadow: 0 0 1px black, 0 0 1px black;'
+                                                    : 'color: lightgray; text-shadow: 0 0 1px black, 0 0 1px black;'">
                                 </span>
                                 <div th:if="${reviewsOfTopPopularity[moviePopular.id]} != null">
                                     <div th:each="review : ${reviewsOfTopPopularity[moviePopular.id]}">
                                         <span th:text="${review.content}" class="reviewText"></span>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,26 +103,28 @@
                 <h3 class="mb-3 font-weight-bold">리뷰 순위</h3>
                 <div th:each="movieReview : ${moviesOfTopReview}">
                     <div class="mb-3 row">
-                        <a th:href="@{'/movieDetail/' + ${movieReview.id}}" class="movie-link black-text">
-                            <div class="col-sm-6">
+                        <div class="col-sm-6">
+                            <a th:href="@{'/movieDetail/' + ${movieReview.id}}" class="movie-link black-text">
                                 <img th:src="'https://image.tmdb.org/t/p/w500' + ${movieReview.posterUrl}" class="movie-poster-img"/>
-                            </div>
-                            <div class="col-sm-6 movie-info-box">
+                            </a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a th:href="@{'/movieDetail/' + ${movieReview.id}}" class="movie-info-box movie-link black-text d-block">
                                 <div th:text="${movieReview.title}" class="movieTitle"></div>
                                 <div th:text="'조회수 ' + ${reviewCountOfTopReview[movieReview.id]} + ' 회'" class="reviewCount"></div>
                                 <span th:each="i : ${#numbers.sequence(1, 10)}"
                                       th:text="${i <= movieReview.rating} ? '★' : '☆'"
                                       th:style="${i <= movieReview.rating}
-                                                  ? 'color: gold; text-shadow: 0 0 1px black, 0 0 1px black;'
-                                                  : 'color: lightgray; text-shadow: 0 0 1px black, 0 0 1px black;'">
+                                                ? 'color: gold; text-shadow: 0 0 1px black, 0 0 1px black;'
+                                                : 'color: lightgray; text-shadow: 0 0 1px black, 0 0 1px black;'">
                                 </span>
                                 <div th:if="${reviewsOfTopReview[movieReview.id]} != null">
                                     <div th:each="review : ${reviewsOfTopReview[movieReview.id]}">
                                         <span th:text="${review.content}" class="reviewText"></span>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
