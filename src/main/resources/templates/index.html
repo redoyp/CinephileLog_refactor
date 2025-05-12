@@ -37,10 +37,22 @@
                         </div>
                     </a>
                 </div>
-                <div class="link-item">
+                <div th:if="${userId != null}" class="link-item">
                     <a th:href="@{/gradeInfo}" class="link-img-wrapper">
                         <img th:src="@{/images/popcorn_bucket_image.png}" class="link-img"/>
                         <span class="link-img-text">등급 소개</span>
+                    </a>
+                </div>
+                <div class="link-item">
+                    <a th:href="@{/profile}" class="link-img-wrapper">
+                        <img th:src="@{/images/beverage_image.png}" class="link-img"/>
+                        <span class="link-img-text">내 프로필</span>
+                    </a>
+                </div>
+                <div th:if="${userId != null and roleName == 'ROLE_ADMIN'}" class="link-item">
+                    <a th:href="@{/admin}" class="link-img-wrapper">
+                        <img th:src="@{/images/throphy_image.png}" class="link-img"/>
+                        <span class="link-img-text">관리자</span>
                     </a>
                 </div>
             </div>
