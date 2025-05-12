@@ -18,7 +18,7 @@
                     <div class="d-flex align-items-center flex-grow-1 overflow-hidden">
                         <img class="pr-0 member-badge-icon"
                              th:src="@{/images/badge_{imageName}.png(imageName=${gradeName})}"/>
-                        <span class="pl-0 text-truncate d-block" style="max-width: 150px;" th:text="${nickname}"></span>
+                        <span class="pl-0 text-truncate d-block" style="max-width: 100px;" th:text="${nickname}" th:title="${nickname}"></span>
                     </div>
                     <a class="menu-link mr-2" th:href="@{/profile}">내 프로필</a>
                     <a class="menu-link mr-2" th:if="${roleName == 'ROLE_ADMIN'}" th:href="@{/admin}">관리자</a>
