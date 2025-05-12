@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/movieDetail.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
@@ -30,7 +32,12 @@
                 <div class="row mb-3 align-items-center">
                     <span class="title-intro">제목</span>
                     <div class="title">
-                        <span th:text="${movie.title != null and !movie.title.isEmpty() ? movie.title : movie.titleOriginal}"></span>                    </div>
+                        <span th:text="${movie.title != null and !movie.title.isEmpty() ? movie.title : movie.titleOriginal}"></span>
+                        <button id="openPlaylistModalBtn" class="btn btn-outline-danger"
+                                th:onclick="'openPlaylistModal(' + ${movie.id} + ')'">
+                            ❤️
+                        </button>
+                    </div>
                 </div>
 
                 <!-- 가로 구분선 -->
@@ -200,6 +207,7 @@
         </div>
     </div>
 </div>
+
 <div class="chat-button"
      id="chatButton"
      th:data-href="@{/chatroom/{id}(id=${movieId})}"
@@ -207,7 +215,56 @@
      th:data-grade-id="${userGradeId}">
     <img src="/images/chat.png" alt="채팅" style="width: 35px; height: 35px;" />
 </div>
+<!-- 플레이리스트 모달 -->
+<div class="modal fade" id="playlistModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <h5 class="modal-title">🎬 내 플레이리스트</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+            </div>
+
+            <div class="modal-body">
+                <!-- 새 리스트 생성 -->
+                <div class="mb-3">
+                    <button class="btn btn-primary" onclick="showCreatePlaylistForm()">➕ 새 플레이리스트 생성</button>
+                </div>
+
+                <!-- 생성 폼 (토글) -->
+                <div id="createPlaylistForm" class="mb-3" style="display: none;">
+                    <input type="text" id="newPlaylistName" class="form-control mb-2" placeholder="리스트 이름">
+                    <textarea id="newPlaylistDesc" class="form-control mb-2" placeholder="설명 (선택)"></textarea>
+                    <button class="btn btn-success" onclick="createPlaylist()">생성하기</button>
+                </div>
+
+                <!-- 리스트 목록 -->
+                <ul class="list-group" id="playlistList"></ul>
+
+                <!-- 리스트 내 영화 보기 -->
+                <div id="playlistDetail" class="mt-4" style="display: none;">
+                    <h6 id="playlistDetailTitle">📽️ 플레이리스트 영화 목록</h6>
+                    <ul class="list-group" id="playlistMovieList"></ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function openPlaylistModal(movieId) {
+        currentMovieId = movieId;
+        const modal = new bootstrap.Modal(document.getElementById('playlistModal'));
+        modal.show();
+        loadMyPlaylists();
+    }
+</script>
+<script src="/js/playlistModal.js"></script>
 <script src="/js/movie-detail.js"></script>
 </body>
 </html>
