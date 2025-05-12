@@ -29,7 +29,13 @@
                 <button id="edit-user-btn" class="mt-3 btn btn-primary">수정</button>
             </div>
             <div id="profile-right" class="col-lg-9 pl-0">
-                <span class="mb-3 pl-5 title" th:text="'You are a ' + ${user.getGrade().getGradeName()} + ' now!'"></span><button class="btn btn-outline-danger" style="position: absolute; left: 500px" onclick="openPlaylistModal(null)">내 플레이리스트</button><br><br><br>
+                <span class="mb-3 pl-5 title" th:text="'You are a ' + ${user.getGrade().getGradeName()} + ' now!'"></span><div th:if="${user.grade.gradeId >= 2}">
+                <button class="btn btn-outline-danger"
+                        style="position: absolute; left: 500px; top: -5px"
+                        onclick="openProfilePlaylistModal()">
+                    내 플레이리스트
+                </button>
+            </div><br><br><br>
                 <div class="pl-5 pb-5 position-relative" style="border-bottom: 1px solid rgba(255, 255, 255, 0.5);">
                     <img src="/images/border-end-img.png" class="border-end-img-horizontal border-end-img-right">
                     <input type="hidden" id="user-id" th:value="${user.getUserId()}">

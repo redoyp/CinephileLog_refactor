@@ -33,7 +33,8 @@
                     <span class="title-intro">제목</span>
                     <div class="title">
                         <span th:text="${movie.title != null and !movie.title.isEmpty() ? movie.title : movie.titleOriginal}"></span>
-                        <button id="openPlaylistModalBtn" class="btn btn-outline-danger"
+                        <button id="openPlaylistModalBtn" th:if="${userGradeId >= 2}"
+                                class="btn btn-outline-danger"
                                 th:onclick="'openPlaylistModal(' + ${movie.id} + ')'">
                             ❤️
                         </button>
