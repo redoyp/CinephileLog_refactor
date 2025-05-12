@@ -57,6 +57,7 @@ dependencies {
     // ElasticSearch
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
     implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.10.2'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
