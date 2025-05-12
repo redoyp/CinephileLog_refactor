@@ -3,19 +3,20 @@ package com.CinephileLog.review.dto;
 import com.CinephileLog.dto.UserResponse;
 import com.CinephileLog.movie.dto.MovieResponse;
 import com.CinephileLog.review.domain.Review;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter; // Setter 추가
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
 
 @Getter
-@Setter // Setter 추가
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewResponse {
+public class ReviewResponse  {
     private Long id;
     private MovieResponse movie;
     private UserResponse user;
@@ -23,10 +24,18 @@ public class ReviewResponse {
     private String content;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
+    private LocalDateTime displayDate;
     private Long likeCount;
     private boolean blinded;
+    private boolean gradeUp;
 
+    // 기존 생성자 (gradeUp은 false로 기본값 처리됨)
     public ReviewResponse(Review review) {
+        this(review, false); // 기본적으로 gradeUp = false
+    }
+
+    // 새 생성자 (등급 상승 여부 전달 가능)
+    public ReviewResponse(Review review, boolean gradeUp) {
         this.id = review.getId();
         this.movie = new MovieResponse(review.getMovie());
         this.user = new UserResponse(review.getUser());
@@ -36,33 +45,35 @@ public class ReviewResponse {
         this.updatedDate = review.getUpdatedDate();
         this.likeCount = review.getLikeCount();
         this.blinded = review.isBlinded();
+        this.gradeUp = gradeUp;
+        this.displayDate = (updatedDate != null && !updatedDate.equals(createdDate)) ? updatedDate : createdDate;
     }
 
-    // 공통으로 반올림된 정수 값 저장
     public int getRoundedRating() {
-        int rounded = rating.setScale(0, RoundingMode.HALF_UP).intValue();
-        return rounded;
+        return rating.setScale(0, RoundingMode.HALF_UP).intValue();
     }
 
-    // 꽉 채운 별
     public int getFullStars() {
-        int full = getRoundedRating() / 2;
-        return full;
+        return getRoundedRating() / 2;
     }
 
-    // 반 별
     public boolean isHalfStar() {
-        boolean half = getRoundedRating() % 2 == 1;
-        return half;
+        return getRoundedRating() % 2 == 1;
     }
 
-    // 빈 별
     public int getEmptyStars() {
-        int fullStars = getFullStars();
-        boolean halfStar = isHalfStar();
+        return 5 - getFullStars() - (isHalfStar() ? 1 : 0);
+    }
+    public String getMoviePoster() {
+        return movie != null ? movie.getPosterUrl() : null;
+    }
 
-        int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    public String getMovieTitle() {
+        return movie != null ? movie.getTitle() : null;
+    }
 
-        return emptyStars;
+
+    public boolean isGradeUp() {
+        return gradeUp;
     }
 }

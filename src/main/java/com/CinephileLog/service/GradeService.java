@@ -42,25 +42,33 @@ public class GradeService {     // 사용자 등급 조회
     }
 
     public Grade getGradeByUserId(Long userId) {
-        User user = userRepository.findByUserId(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("해당 유저 없음"));
         return user.getGrade();
     }
 
+
     @Transactional
-    public void updateGradeForUser(Long userId) {
+    public boolean updateGradeForUser(Long userId) {
         int reviewCount = reviewRepository.countByUserUserId(userId);
         int likeCount = reviewLikeRepository.countByUserId(userId);
-
         User user = userRepository.findById(userId).orElseThrow();
-
-        if (user.getGrade().getGradeId() < 2 && reviewCount >= 10) {
-            user.setGrade(new Grade(2L, "coke"));
-        } else if (user.getGrade().getGradeId() < 3 && reviewCount >= 30 && likeCount >= 10) {
-            user.setGrade(new Grade(3L, "nachos"));
+        Long currentGradeId = user.getGrade().getGradeId();
+        boolean upgraded = false;
+        if (currentGradeId < 2 && reviewCount >= 10) {
+            user.setGrade(gradeRepository.findById(2L).orElseThrow());
+            upgraded = true;
+        } else if (currentGradeId < 3 && reviewCount >= 30 && likeCount >= 10) {
+            user.setGrade(gradeRepository.findById(3L).orElseThrow());
+            upgraded = true;
         }
-
-        userRepository.save(user);
+        if (upgraded) {
+            userRepository.save(user);
+        }
+        return upgraded;
     }
+
+
 
     @Scheduled(cron = "0 0 0 * * MON")
     @Transactional

@@ -367,10 +367,12 @@ document.addEventListener("mouseup", function (e) {
     if (!isDragging) return;
     isDragging = false;
 
+    const userId = chatButton.dataset.userId;
+    const gradeId = parseInt(chatButton.dataset.gradeId, 10);
+
     const mouseUpTime = Date.now();
     const pressDuration = mouseUpTime - mouseDownTime;
 
-    // 드래그가 거의 없었고, 누른 시간이 짧으면 이동
     const moveThreshold = 5; // px
     const timeThreshold = 200; // ms
 
@@ -378,7 +380,17 @@ document.addEventListener("mouseup", function (e) {
     const movedY = Math.abs(e.clientY - (chatButton.offsetTop + offsetY));
 
     if (pressDuration < timeThreshold && movedX < moveThreshold && movedY < moveThreshold) {
+        if (!userId) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        if (gradeId < 3) {
+            alert("채팅은 3등급(Nachos) 이상부터 가능합니다.");
+            return;
+        }
         window.location.href = chatButton.dataset.href;
     }
 });
+
 

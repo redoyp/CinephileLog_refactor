@@ -100,8 +100,13 @@
                                     <!-- 닉네임 등급 -->
                                     <div class="nickname-grade">
                                         <h5 class="nickname" th:text="${review.user.nickname}"></h5>
-                                        <span class="grade-badge" th:text="${review.user.gradeName}"></span>
+                                        <img th:src="@{/images/badge_{gradeName}.png(gradeName=${review.user.gradeName.toLowerCase()})}"
+                                             alt="등급 배지"
+                                             style="height: 24px;" />
+                                        <span th:if="${review.user.gradeId >= 4}" class="badge-editor">에디터 추천</span>
                                     </div>
+
+
                                 </div>
 
                                 <!-- 리뷰 내용 -->
@@ -132,8 +137,9 @@
                                     </div>
 
                                     <!-- 생성/수정 날짜 -->
-                                    <p class="review-date">작성 날짜:
-                                        <span th:text="${review.updatedDate != null && review.updatedDate != review.createdDate ? review.updatedDate : review.createdDate}"></span>
+                                    <p class="review-date">
+                                        작성 날짜:
+                                        <span th:text="${#temporals.format(review.displayDate, 'yyyy-MM-dd HH:mm')}"></span>
                                     </p>
                                 </div>
                             </div>
@@ -194,7 +200,11 @@
         </div>
     </div>
 </div>
-<div class="chat-button" id="chatButton" th:data-href="@{/chatroom/{id}(id=${movieId})}">
+<div class="chat-button"
+     id="chatButton"
+     th:data-href="@{/chatroom/{id}(id=${movieId})}"
+     th:data-user-id="${userId}"
+     th:data-grade-id="${userGradeId}">
     <img src="/images/chat.png" alt="채팅" style="width: 35px; height: 35px;" />
 </div>
 

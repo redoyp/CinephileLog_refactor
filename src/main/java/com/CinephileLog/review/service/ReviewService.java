@@ -9,6 +9,7 @@ import com.CinephileLog.review.dto.ReviewRequest;
 import com.CinephileLog.review.dto.ReviewRequestUpdate;
 import com.CinephileLog.review.dto.ReviewResponse;
 import com.CinephileLog.review.repository.ReviewRepository;
+import com.CinephileLog.service.GradeService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
@@ -24,12 +25,14 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final MovieRepository movieRepository;
+    private final GradeService gradeService;
 
     public ReviewService(ReviewRepository reviewRepository, UserRepository userRepository,
-                         MovieRepository movieRepository) {
+                         MovieRepository movieRepository, GradeService gradeService) {
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
         this.movieRepository = movieRepository;
+        this.gradeService = gradeService;
     }
 
     // 리뷰 생성(로그인 한 유저만)
@@ -37,23 +40,23 @@ public class ReviewService {
     public ReviewResponse createReview(Long movieId, ReviewRequest request, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("유저 없음"));
-
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new RuntimeException("영화 없음"));
 
-        // 이미 (blinded = false) 리뷰가 있는지 확인
         if (reviewRepository.existsByUser_UserIdAndMovie_idAndBlindedFalse(userId, movieId)) {
             throw new IllegalArgumentException("이미 해당 영화에 대한 리뷰를 작성했습니다.");
         }
 
         validateRating(request.getRating());
-
         Review savedReview = reviewRepository.save(request.toEntity(user, movie));
 
         updateMovieRating(movie);
 
-        return new ReviewResponse(savedReview);
+        boolean gradeUp = gradeService.updateGradeForUser(userId);
+
+        return new ReviewResponse(savedReview, gradeUp);
     }
+
 
     // 특정 영화의 모든 리뷰 조회
     public List<ReviewResponse> getAllReviews(Long movieId) {
@@ -240,5 +243,11 @@ public class ReviewService {
 
         review.setBlinded(false);
         reviewRepository.save(review);
+    }
+    public List<ReviewResponse> findEditorPickReviews() {
+        List<Review> reviews = reviewRepository.findEditorPickReviews(4L); // HOTDOG 이상
+        return reviews.stream()
+                .map(review -> new ReviewResponse(review, true))
+                .toList();
     }
 }

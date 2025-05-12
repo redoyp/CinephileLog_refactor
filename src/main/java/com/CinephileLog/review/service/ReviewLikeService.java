@@ -6,6 +6,7 @@ import com.CinephileLog.review.domain.Review;
 import com.CinephileLog.review.domain.ReviewLike;
 import com.CinephileLog.review.repository.ReviewLikeRepository;
 import com.CinephileLog.review.repository.ReviewRepository;
+import com.CinephileLog.service.GradeService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +19,14 @@ public class ReviewLikeService {
     private final ReviewLikeRepository reviewLikeRepository;
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
+    private final GradeService gradeService;
 
     public ReviewLikeService(ReviewLikeRepository reviewLikeRepository, ReviewRepository reviewRepository,
-                             UserRepository userRepository) {
+                             UserRepository userRepository, GradeService gradeService) {
         this.reviewLikeRepository = reviewLikeRepository;
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
+        this.gradeService = gradeService;
     }
 
     @Transactional
@@ -33,7 +36,7 @@ public class ReviewLikeService {
 
         Optional<ReviewLike> existingLike = reviewLikeRepository.findByUserAndReview(user, review);
 
-        if (existingLike.isPresent()) { // 좋아요가 눌러져 있음 -> 다시 누를시 취소
+        if (existingLike.isPresent()) {
             reviewLikeRepository.delete(existingLike.get());
             review.setLikeCount(review.getLikeCount() - 1);
             reviewRepository.save(review);
@@ -43,9 +46,11 @@ public class ReviewLikeService {
             reviewLikeRepository.save(like);
             review.setLikeCount(review.getLikeCount() + 1);
             reviewRepository.save(review);
+            gradeService.updateGradeForUser(userId);
             return true;
         }
     }
+
 
     public List<ReviewLike> findReviewLikedByUser(Long userId) {
         return reviewLikeRepository.findByUserUserId(userId);

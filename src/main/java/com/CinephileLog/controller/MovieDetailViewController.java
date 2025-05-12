@@ -61,6 +61,7 @@ public class MovieDetailViewController {
 
         Grade grade = gradeService.getGradeByUserId(userId);
         model.addAttribute("grade", grade);
+        model.addAttribute("userGradeId", grade.getGradeId());
 
         boolean hasUserReviewed = reviews.stream()
                 .anyMatch(review -> review.getUser().getUserId().equals(userId));

@@ -3,7 +3,10 @@ package com.CinephileLog.column.controller;
 import com.CinephileLog.column.dto.ColumnArticleRequest;
 import com.CinephileLog.column.dto.ColumnArticleResponse;
 import com.CinephileLog.column.service.ColumnArticleService;
+import com.CinephileLog.domain.User;
 import com.CinephileLog.movie.repository.MovieRepository;
+import com.CinephileLog.repository.UserRepository;
+import com.CinephileLog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,7 +27,7 @@ import java.nio.file.AccessDeniedException;
 public class ColumnArticleController {
 
     private final ColumnArticleService columnArticleService;
-    private final MovieRepository movieRepository;
+    private final UserService userService;
 
     @GetMapping
     public String columnList(@RequestParam(defaultValue = "1") int page,
@@ -33,8 +36,17 @@ public class ColumnArticleController {
                              @RequestParam(defaultValue = "desc") String direction,
                              @RequestParam(required = false) String keyword,
                              @RequestParam(required = false) String field,
+                             @AuthenticationPrincipal OAuth2User user,
                              Model model) {
-
+        if (user != null) {
+            Long userId = user.getAttribute("userId");
+            User userInfo = userService.getUserById(userId);
+            model.addAttribute("userId", userId);
+            model.addAttribute("userGradeId", userInfo.getGrade().getGradeId());
+        } else {
+            model.addAttribute("userId", null);
+            model.addAttribute("userGradeId", 0);
+        }
         Page<ColumnArticleResponse> columns = columnArticleService.getColumnPage(page, size, sort, direction, keyword, field);
         int blockSize = 10;
         int currentPage = columns.getNumber() + 1;

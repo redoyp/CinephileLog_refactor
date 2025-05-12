@@ -25,8 +25,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT COUNT(r) > 0 FROM Review r WHERE r.user.userId = :userId AND r.movie.id = :movieId AND r.blinded = false")
     boolean existsByUser_UserIdAndMovie_idAndBlindedFalse(Long userId, Long movieId);
 
-    @Query("SELECT r FROM Review r WHERE r.user.userId = :userId AND r.blinded = false")
-    int countByUserUserId(Long userId);
+    @Query("SELECT COUNT(r) FROM Review r WHERE r.user.userId = :userId AND r.blinded = false")
+    int countByUserUserId(@Param("userId") Long userId);
+
 
     // 키워드로 검색 (관리자 페이지용)
     @Query("SELECT r FROM Review r " +
@@ -42,4 +43,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "ORDER BY MAX(r.like_count) DESC " +
             "LIMIT 3", nativeQuery = true)
     List<Long> findTop3MovieIdsByReview();
+
+    // 등급 4 이상인 유저의 리뷰만 조회
+    @Query("SELECT r FROM Review r WHERE r.user.grade.gradeId >= :minGradeId AND r.blinded = false")
+    List<Review> findEditorPickReviews(@Param("minGradeId") Long minGradeId);
+
 }

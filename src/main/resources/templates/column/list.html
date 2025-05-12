@@ -34,7 +34,14 @@
             </select>
             <input type="text" name="keyword" th:value="${keyword}" class="form-control mr-2" placeholder="검색어"/>
             <button type="submit" class="btn btn-primary">검색</button>
-            <a href="/column/write" class="btn btn-success" style="margin-left: 419px">✍ 글쓰기</a>
+            <a href="/column/write"
+               class="btn btn-success"
+               style="margin-left: 419px"
+               id="write-button"
+               th:data-user-id="${userId}"
+               th:data-grade-id="${userGradeId}">
+                ✍ 글쓰기
+            </a>
         </form>
         <table class="table table-hover">
             <thead class="thead-dark">
@@ -94,6 +101,26 @@
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.forEach(function (tooltipTriggerEl) {
             new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const writeBtn = document.getElementById("write-button");
+        if (!writeBtn) return;
+
+        const userId = writeBtn.dataset.userId;
+        const gradeId = parseInt(writeBtn.dataset.gradeId, 10);
+
+        writeBtn.addEventListener("click", function (event) {
+            if (!userId) {
+                event.preventDefault();
+                alert("로그인이 필요합니다.");
+                return;
+            }
+
+            if (gradeId < 4) {
+                event.preventDefault();
+                alert("✋ 글쓰기는 4등급(Hotdog) 이상만 가능합니다.");
+            }
         });
     });
 </script>

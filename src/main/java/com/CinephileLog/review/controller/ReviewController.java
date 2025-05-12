@@ -32,16 +32,14 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> createReview(@PathVariable Long movieId,
                                                        @Valid @RequestBody ReviewRequest request,
                                                        @AuthenticationPrincipal OAuth2User user) {
-        if(user == null) {
+        if (user == null) {
             return ResponseEntity.status(401).build();
         }
-
         Long userId = user.getAttribute("userId");
-
-        ReviewResponse review = reviewService.createReview(movieId, request, userId);
-
-        return ResponseEntity.ok(review);
+        ReviewResponse response = reviewService.createReview(movieId, request, userId);
+        return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/movies/{movieId}/reviews")
     public ResponseEntity<List<ReviewResponse>> getAllReviews(@PathVariable Long movieId) {
