@@ -63,9 +63,9 @@
 <script>
   function searchMovie() {
     const keyword = document.getElementById("searchKeyword").value;
-    if (!keyword) return;
+    if (!keyword || keyword.length < 2) return;
 
-    fetch(`/api/movies/search?keyword=${keyword}`)
+    fetch(`/autocomplete?keyword=${keyword}`)
             .then(response => response.json())
             .then(data => {
               const list = document.getElementById("resultList");
@@ -76,14 +76,29 @@
               }
               data.forEach(movie => {
                 const item = document.createElement("li");
-                item.className = "list-group-item list-group-item-action";
-                item.textContent = `${movie.title} (${movie.releaseDate || 'N/A'})`;
+                item.className = "list-group-item list-group-item-action d-flex align-items-center";
+                item.style.cursor = "pointer";
+
+                const poster = document.createElement("img");
+                poster.src = movie.posterUrl ? `https://image.tmdb.org/t/p/w92${movie.posterUrl}` : "/img/no-poster.png";
+                poster.alt = "poster";
+                poster.style.width = "50px";
+                poster.style.height = "75px";
+                poster.style.objectFit = "cover";
+                poster.className = "mr-3";
+
+                const text = document.createElement("div");
+                text.innerHTML = `<strong>${movie.title}</strong><br/><small>${movie.releaseYear || 'N/A'}</small>`;
+
+                item.appendChild(poster);
+                item.appendChild(text);
                 item.onclick = () => selectMovie(movie);
                 list.appendChild(item);
               });
               document.getElementById("searchResult").style.display = "block";
             });
   }
+
 
   function selectMovie(movie) {
     document.getElementById("movieId").value = movie.movieId;

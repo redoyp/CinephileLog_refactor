@@ -62,7 +62,6 @@ public class ColumnArticleController {
     @GetMapping("/write")
     public String writeForm(Model model) {
         model.addAttribute("column", new ColumnArticleRequest());
-        model.addAttribute("movies", movieRepository.findAll());
         return "column/form";
     }
 
@@ -70,7 +69,6 @@ public class ColumnArticleController {
     public String editForm(@PathVariable Long id, Model model) {
         ColumnArticleResponse column = columnArticleService.getColumnDetail(id);
         model.addAttribute("column", column);
-        model.addAttribute("movies", movieRepository.findAll());
         return "column/form";
     }
 
