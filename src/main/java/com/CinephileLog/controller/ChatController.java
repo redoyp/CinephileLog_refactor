@@ -44,8 +44,7 @@ public class ChatController {
         messageService.saveMessage(message, roomId);
         template.convertAndSend("/topic/chat/" + roomId, message);
     }
-
-
+    
     @GetMapping("/chatroom/{movieId}")
     public String enterChatRoom(@PathVariable Long movieId, Model model,
                                 @AuthenticationPrincipal OAuth2User oAuth2User,
@@ -67,7 +66,6 @@ public class ChatController {
         return "chatroom";
     }
 
-
     @MessageMapping("/chat/enter/{roomId}")
     public void enter(@DestinationVariable Long roomId, ChatMessageDTO message) {
         message.setType("SYSTEM");
@@ -81,22 +79,4 @@ public class ChatController {
         message.setSendTime(new Timestamp(System.currentTimeMillis()));
         template.convertAndSend("/topic/chat/" + roomId, message);
     }
-
-//    @GetMapping("/chatroom/{movieId}")
-//    public String enterChatRoom(@PathVariable Long movieId, Model model) {
-//
-//        // 테스트용 사용자
-//        Long fakeUserId = 1L;
-//        String fakeNickname = "testUser";
-//
-//        ChattingRoom room = chattingRoomService.findOrCreateByMovieId(movieId);
-//
-//        model.addAttribute("roomId", room.getRoomId());
-//        model.addAttribute("userId", fakeUserId);
-//        model.addAttribute("nickname", fakeNickname);
-//        return "chatroom";
-//    }
-
-
-
 }

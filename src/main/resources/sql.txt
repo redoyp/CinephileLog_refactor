@@ -77,7 +77,7 @@ CREATE TABLE message (
     message_id BIGINT NOT NULL AUTO_INCREMENT,
     room_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
-    send_time TIMESTAMP NOT NULL,
+    send_time TIMESTAMP(3) NOT NULL,
     content TEXT NOT NULL,
     PRIMARY KEY (message_id),
     FOREIGN KEY (room_id) REFERENCES chatting_room(room_id),

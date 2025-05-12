@@ -180,7 +180,6 @@
 <body>
 <div id="main-area">
     <div th:replace="header :: siteHeader"></div>
-
     <div class="container">
         <div id="chat-container">
             <div class="movie-card" th:onclick="|location.href='/movieDetail/${movieId}'|">
@@ -192,7 +191,6 @@
                     <p>배우: [[${cast}]]</p>
                 </div>
             </div>
-
             <div id="chat-box">
                 <div class="chat-header">[[${movieTitle}]] 채팅방</div>
                 <div id="chat-messages"></div>
@@ -208,7 +206,6 @@
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script th:inline="javascript">
@@ -216,17 +213,15 @@
     const userId = [[${userId}]];
     const nickname = [[${nickname}]];
     const movieId = [[${movieId}]];
-
     let stompClient;
     let page = 0;
     const size = 15;
     const chatBox = document.getElementById("chat-messages");
-    let lastDateShown = "";
-
+    let lastDateTop = null;
+    let lastDateBottom = null;
     window.addEventListener("load", function () {
         const socket = new SockJS("/ws-chat");
         stompClient = Stomp.over(socket);
-
         stompClient.connect({}, function () {
             stompClient.subscribe(`/topic/chat/${roomId}`, function (message) {
                 const msg = JSON.parse(message.body);
@@ -266,12 +261,12 @@
         const msgDate = new Date(msg.sendTime);
         const dateStr = msgDate.toLocaleDateString();
 
-        if (lastDateShown !== dateStr) {
+        if (lastDateBottom !== dateStr) {
             const separator = document.createElement("div");
             separator.classList.add("date-separator");
             separator.innerText = dateStr;
             chatBox.appendChild(separator);
-            lastDateShown = dateStr;
+            lastDateBottom = dateStr;
         }
 
         if (msg.type === "SYSTEM") {
@@ -304,7 +299,7 @@
         fetch(`/api/chat/messages?roomId=${roomId}&page=${page}&size=${size}`)
             .then(res => res.json())
             .then(data => {
-                data.reverse().forEach(msg => insertOldMessage(msg));
+                data.forEach(msg => insertOldMessage(msg)); // ✅ reverse 없음
                 page++;
                 if (page === 1) chatBox.scrollTop = chatBox.scrollHeight;
             });
@@ -318,14 +313,6 @@
         const msgDate = new Date(msg.sendTime);
         const dateStr = msgDate.toLocaleDateString();
 
-        if (lastDateShown !== dateStr) {
-            const separator = document.createElement("div");
-            separator.classList.add("date-separator");
-            separator.innerText = dateStr;
-            chatBox.prepend(separator);
-            lastDateShown = dateStr;
-        }
-
         const meta = document.createElement("div");
         meta.classList.add("message-meta");
         meta.innerText = `${msg.nickname} · ${msgDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
@@ -336,15 +323,21 @@
 
         wrapper.appendChild(meta);
         wrapper.appendChild(bubble);
-        chatBox.prepend(wrapper);
-    }
+        if (lastDateTop !== dateStr) {
+            const separator = document.createElement("div");
+            separator.classList.add("date-separator");
+            separator.innerText = dateStr;
+            chatBox.appendChild(separator);
+            lastDateTop = dateStr;
+        }
 
+        chatBox.appendChild(wrapper);
+    }
     chatBox.addEventListener("scroll", () => {
         if (chatBox.scrollTop === 0) {
             loadMessages();
         }
     });
-
     window.addEventListener("beforeunload", () => {
         stompClient.send(`/app/chat/leave/${roomId}`, {}, JSON.stringify({
             userId: userId,
@@ -357,3 +350,4 @@
 </script>
 </body>
 </html>
+
