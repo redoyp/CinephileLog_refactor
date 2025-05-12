@@ -47,11 +47,11 @@ public class ChatController {
 
 
     @GetMapping("/chatroom/{movieId}")
-    public String enterChatRoom(@PathVariable Long movieId, Model model, @AuthenticationPrincipal OAuth2User oAuth2User, HttpSession session) {
-        //For header fragment - additional attribute
+    public String enterChatRoom(@PathVariable Long movieId, Model model,
+                                @AuthenticationPrincipal OAuth2User oAuth2User,
+                                HttpSession session) {
         model.addAttribute("gradeName", session.getAttribute("gradeName").toString());
         model.addAttribute("roleName", session.getAttribute("roleName").toString());
-
         ChattingRoom room = chattingRoomService.findOrCreateByMovieId(movieId);
         MovieResponse movie = movieService.getMovieDetail(movieId);
         model.addAttribute("roomId", room.getRoomId());
@@ -61,8 +61,12 @@ public class ChatController {
         model.addAttribute("movieTitle", movie.getTitle());
         model.addAttribute("posterUrl", movie.getPosterUrl());
         model.addAttribute("rating", movie.getRating());
+        model.addAttribute("director", movie.getDirector() != null ? movie.getDirector() : "감독 정보 없음");
+        model.addAttribute("cast", movie.getCast() != null ? movie.getCast() : "출연 정보 없음");
+
         return "chatroom";
     }
+
 
     @MessageMapping("/chat/enter/{roomId}")
     public void enter(@DestinationVariable Long roomId, ChatMessageDTO message) {

@@ -43,13 +43,7 @@
                         <div>감독: <span th:text="${movie.director}"></span></div>
                         <div>출연: <span th:text="${movie.cast}"></span></div>
                         <div>장르:
-                            <span th:if="${#lists.isEmpty(movie.genres)}">장르 정보 없음</span>
-                            <span th:unless="${#lists.isEmpty(movie.genres)}">
-                                <span th:each="genre, iterStat : ${movie.genres}">
-                                    <span th:text="${genre.genreName}"></span>
-                                    <span th:if="${not iterStat.last}">,</span>
-                                </span>
-                            </span>
+                            <span th:text="${movie.genres != null && !movie.genres.isEmpty() ? movie.genres : '장르 정보 없음'}"></span>
                         </div>
                         <div>개봉일: <span th:text="${movie.releaseDate}"></span></div>
                     </div>

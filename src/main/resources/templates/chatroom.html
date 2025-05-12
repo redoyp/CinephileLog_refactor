@@ -183,8 +183,8 @@
 
     <div class="container">
         <div id="chat-container">
-            <div class="movie-card" onclick="location.href='/movie/[[${movieId}]]'">
-                <img th:src="'https://image.tmdb.org/t/p/w500' + ${posterUrl}" class="poster-img" alt="poster">
+            <div class="movie-card" th:onclick="|location.href='/movieDetail/${movieId}'|">
+            <img th:src="'https://image.tmdb.org/t/p/w500' + ${posterUrl}" class="poster-img" alt="poster">
                 <div class="overlay">
                     <h3>[[${movieTitle}]]</h3>
                     <p>⭐ [[${rating}]]</p>

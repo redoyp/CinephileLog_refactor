@@ -1,13 +1,8 @@
 package com.CinephileLog.movie.dto;
 
-import com.CinephileLog.movie.domain.Genre;
 import com.CinephileLog.movie.domain.Movie;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +20,10 @@ public class MovieResponse {
     private String synopsis;
     private String synopsisOriginal;
     private String director;
+    private String directorOriginal;
     private String cast;
-    private List<GenreResponse> genres;
+    private String castOriginal;
+    private String genres; // 장르 문자열
 
     public MovieResponse(Movie movie) {
         this.id = movie.getId();
@@ -38,9 +35,9 @@ public class MovieResponse {
         this.synopsis = movie.getSynopsis();
         this.synopsisOriginal = movie.getSynopsisOriginal();
         this.director = movie.getDirector();
+        this.directorOriginal = movie.getDirectorOriginal();
         this.cast = movie.getCast();
-        this.genres = movie.getGenres().stream()
-                .map(GenreResponse::new)
-                .toList();
+        this.castOriginal = movie.getCastOriginal();
+        this.genres = movie.getGenres();
     }
 }

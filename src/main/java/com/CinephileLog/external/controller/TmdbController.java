@@ -12,11 +12,11 @@ public class TmdbController {
         this.tmdbService = tmdbService;
     }
 
-    @GetMapping("/sync-genres")
-    public String syncGenres() {
-        tmdbService.saveGenres();
-        return "ok";
-    }
+//    @GetMapping("/sync-genres")
+//    public String syncGenres() {
+//        tmdbService.saveGenres();
+//        return "ok";
+//    }
 
 //    @GetMapping("/sync-movies")
 //    public String syncMovies() {

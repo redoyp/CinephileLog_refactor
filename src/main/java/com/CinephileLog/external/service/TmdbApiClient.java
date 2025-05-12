@@ -4,7 +4,6 @@ import com.CinephileLog.movie.domain.Movie;
 import com.CinephileLog.movie.repository.MovieRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -15,6 +14,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,46 +41,74 @@ public class TmdbApiClient {
         }
 
         try {
-            ResponseEntity<Map> koResponse = restTemplate.getForEntity(
-                    "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + apiKey + "&language=ko-KR",
-                    Map.class
-            );
-            ResponseEntity<Map> enResponse = restTemplate.getForEntity(
-                    "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + apiKey + "&language=en-US",
-                    Map.class
-            );
+            Map<String, Object> koData = restTemplate.getForObject(
+                    "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + apiKey + "&language=ko-KR", Map.class);
+            Map<String, Object> enData = restTemplate.getForObject(
+                    "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + apiKey + "&language=en-US", Map.class);
 
-            if (koResponse.getStatusCode() != HttpStatus.OK || koResponse.getBody() == null
-                    || enResponse.getStatusCode() != HttpStatus.OK || enResponse.getBody() == null) {
-                System.out.println("❌ TMDB 응답 실패 - ID: " + id);
-                return Optional.empty();
-            }
+            if (koData == null || enData == null) return Optional.empty();
 
-            Map<String, Object> koData = koResponse.getBody();
-            Map<String, Object> enData = enResponse.getBody();
+            Map<String, Object> creditData = restTemplate.getForObject(
+                    "https://api.themoviedb.org/3/movie/" + id + "/credits?api_key=" + apiKey + "&language=ko-KR", Map.class);
+            List<Map<String, Object>> castList = (List<Map<String, Object>>) creditData.getOrDefault("cast", new ArrayList<>());
+            List<Map<String, Object>> crewList = (List<Map<String, Object>>) creditData.getOrDefault("crew", new ArrayList<>());
 
             Movie movie = new Movie();
             movie.setId(movieId);
             movie.setTitle((String) koData.getOrDefault("title", ""));
             movie.setTitleOriginal((String) koData.getOrDefault("original_title", ""));
+            movie.setPosterUrl((String) koData.get("poster_path"));
+            movie.setSynopsis((String) koData.getOrDefault("overview", ""));
+            movie.setSynopsisOriginal((String) enData.getOrDefault("overview", ""));
 
             String releaseDateStr = (String) koData.get("release_date");
             if (releaseDateStr != null && !releaseDateStr.isBlank()) {
                 movie.setReleaseDate(LocalDate.parse(releaseDateStr));
             }
 
-            movie.setPosterUrl((String) koData.get("poster_path"));
-            movie.setSynopsis((String) koData.getOrDefault("overview", ""));
-            movie.setSynopsisOriginal((String) enData.getOrDefault("overview", ""));
-
             BigDecimal voteAverage = new BigDecimal(((Number) koData.get("vote_average")).doubleValue());
             int roundedRating = voteAverage.setScale(0, RoundingMode.HALF_UP).intValue();
             movie.setRating(BigDecimal.valueOf(roundedRating));
 
-            // 저장 후 캐시에 ID 추가
+            // 감독
+            List<String> directors = new ArrayList<>();
+            List<String> directorsOriginal = new ArrayList<>();
+            for (Map<String, Object> crew : crewList) {
+                if ("Director".equals(crew.get("job"))) {
+                    directors.add((String) crew.get("name"));
+                    directorsOriginal.add((String) crew.get("original_name"));
+                }
+            }
+            movie.setDirector(String.join(", ", directors));
+            movie.setDirectorOriginal(String.join(", ", directorsOriginal));
+
+            // 배우 (popularity 기준 상위 5명)
+            castList.sort((a, b) -> Double.compare(
+                    ((Number) b.getOrDefault("popularity", 0)).doubleValue(),
+                    ((Number) a.getOrDefault("popularity", 0)).doubleValue()
+            ));
+            List<String> topCast = new ArrayList<>();
+            List<String> topCastOriginal = new ArrayList<>();
+            for (int i = 0; i < Math.min(5, castList.size()); i++) {
+                Map<String, Object> actor = castList.get(i);
+                topCast.add((String) actor.get("name"));
+                topCastOriginal.add((String) actor.get("original_name"));
+            }
+            movie.setCast(String.join(", ", topCast));
+            movie.setCastOriginal(String.join(", ", topCastOriginal));
+
+            // 장르 문자열 저장
+            List<Map<String, Object>> genreList = (List<Map<String, Object>>) koData.get("genres");
+            if (genreList != null) {
+                String genreNames = genreList.stream()
+                        .map(g -> (String) g.get("name"))
+                        .collect(Collectors.joining(", "));
+                movie.setGenres(genreNames);
+            }
+
             movieRepository.save(movie);
             cachedMovieIds.add(movieId);
-
+            System.out.println("✅ 저장 완료 - ID: " + movieId + " (" + movie.getTitle() + ")");
             return Optional.of(movie);
 
         } catch (HttpClientErrorException.NotFound e) {
@@ -91,6 +119,10 @@ public class TmdbApiClient {
 
         return Optional.empty();
     }
+
+
+
+
 
     public int fetchLatestMovieId(String apiKey) {
         ResponseEntity<Map> response = restTemplate.getForEntity(

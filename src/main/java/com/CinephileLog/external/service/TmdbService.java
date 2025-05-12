@@ -1,19 +1,7 @@
 package com.CinephileLog.external.service;
 
 import com.CinephileLog.external.TmdbClient;
-import com.CinephileLog.external.dto.Credits;
-import com.CinephileLog.external.dto.TmdbGenre;
-import com.CinephileLog.external.dto.TmdbMovie;
-import com.CinephileLog.movie.domain.Genre;
-import com.CinephileLog.movie.domain.Movie;
-import com.CinephileLog.movie.repository.GenreRepository;
 import com.CinephileLog.movie.repository.MovieRepository;
-import jakarta.transaction.Transactional;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,21 +11,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TmdbService {
     private final TmdbClient tmdbClient;
-    private final GenreRepository genreRepository;
     private final MovieRepository movieRepository;
 
-    @Transactional
-    public void saveGenres() {
-        List<TmdbGenre> genres = tmdbClient.fetchGenres();
-
-        for (TmdbGenre dto : genres) {
-            Genre genre = genreRepository.findByName(dto.getName())
-                    .orElseGet(() -> new Genre(dto.getName()));
-
-            genreRepository.save(genre);
-            log.info("저장된 장르 이름: {}", genre.getName());
-        }
-    }
+//    @Transactional
+//    public void saveGenres() {
+//        List<TmdbGenre> genres = tmdbClient.fetchGenres();
+//
+//        for (TmdbGenre dto : genres) {
+//            Genre genre = genreRepository.findByName(dto.getName())
+//                    .orElseGet(() -> new Genre(dto.getName()));
+//
+//            genreRepository.save(genre);
+//            log.info("저장된 장르 이름: {}", genre.getName());
+//        }
+//    }
 
 //    @Transactional
 //    public void saveMovies() {
