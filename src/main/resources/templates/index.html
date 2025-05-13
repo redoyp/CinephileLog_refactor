@@ -64,74 +64,106 @@
         </div>
     </div>
 </section>
-<section id="main-area2" class="scroll-section">
-    <div class ="container-fluid">
-        <div class="row">
-            <!--top popular section-->
-            <div id="index-left-content" class="col-6 solid-bg">
-                <h3 class="mb-3 white-text font-weight-bold">영화 순위</h3>
-                <div th:each="moviePopular : ${moviesOfTopPopularity}">
-                    <div class="row mb-3">
-                        <div class="col-sm-6">
-                            <a th:href="@{'/movieDetail/' + ${moviePopular.id}}" class="movie-link white-text">
-                                <img th:src="'https://image.tmdb.org/t/p/w500' + ${moviePopular.posterUrl}" class="movie-poster-img"/>
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a th:href="@{'/movieDetail/' + ${moviePopular.id}}" class="movie-info-box movie-link white-text d-block">
-                                <div th:text="${moviePopular.title}" class="movieTitle"></div>
-                                <div th:text="'조회수 ' + ${reviewCountOfTopPopularity[moviePopular.id]} + ' 회'" class="reviewCount"></div>
-                                <span th:each="i : ${#numbers.sequence(1, 10)}"
-                                        th:text="${i <= moviePopular.rating} ? '★' : '☆'"
-                                        th:style="${i <= moviePopular.rating}
-                                                    ? 'color: gold; text-shadow: 0 0 1px black, 0 0 1px black;'
-                                                    : 'color: lightgray; text-shadow: 0 0 1px black, 0 0 1px black;'">
-                                </span>
-                                <div th:if="${reviewsOfTopPopularity[moviePopular.id]} != null">
-                                    <div th:each="review : ${reviewsOfTopPopularity[moviePopular.id]}">
-                                        <span th:text="${review.content}" class="reviewText"></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section id="main-area2" class="scroll-section">
+        <div class="container-fluid">
+            <div class="row">
 
-            <!--top reviews section-->
-            <div id="index-right-content" class="col-6 solid-bg-yellow">
-                <h3 class="mb-3 font-weight-bold">리뷰 순위</h3>
-                <div th:each="movieReview : ${moviesOfTopReview}">
-                    <div class="mb-3 row">
-                        <div class="col-sm-6">
-                            <a th:href="@{'/movieDetail/' + ${movieReview.id}}" class="movie-link black-text">
-                                <img th:src="'https://image.tmdb.org/t/p/w500' + ${movieReview.posterUrl}" class="movie-poster-img"/>
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a th:href="@{'/movieDetail/' + ${movieReview.id}}" class="movie-info-box movie-link black-text d-block">
-                                <div th:text="${movieReview.title}" class="movieTitle"></div>
-                                <div th:text="'조회수 ' + ${reviewCountOfTopReview[movieReview.id]} + ' 회'" class="reviewCount"></div>
-                                <span th:each="i : ${#numbers.sequence(1, 10)}"
-                                      th:text="${i <= movieReview.rating} ? '★' : '☆'"
-                                      th:style="${i <= movieReview.rating}
-                                                ? 'color: gold; text-shadow: 0 0 1px black, 0 0 1px black;'
-                                                : 'color: lightgray; text-shadow: 0 0 1px black, 0 0 1px black;'">
-                                </span>
-                                <div th:if="${reviewsOfTopReview[movieReview.id]} != null">
-                                    <div th:each="review : ${reviewsOfTopReview[movieReview.id]}">
-                                        <span th:text="${review.content}" class="reviewText"></span>
+                <!-- 🎬 영화 순위 -->
+                <div class="col-md-6 px-4 py-4 bg-main text-white">
+                    <h3 class="font-weight-bold mb-4 movieRank">영화 순위</h3>
+                    <div class="row">
+                        <!-- 인기 영화 -->
+                        <div class="col-md-6">
+                            <h3 class="text-white font-weight-bold mb-3 medTitle">인기 영화</h3>
+                            <div th:each="movie : ${moviesOfTopPopularity}" class="mb-3">
+                                <div class="card movie-card p-2 d-flex flex-row align-items-center leftCard">
+                                    <img th:src="'https://image.tmdb.org/t/p/w500' + ${movie.posterUrl}" class="poster-img me-3" alt="poster">
+                                    <div class="card-body p-2">
+                                        <h2 th:text="${movie.formattedTitle}" class="card-title mb-1 text-white"></h2><br>
+                                        <p th:text="'인기도: ' + ${movie.popularity}" class="card-text mb-1 text-lightgray small"></p>
+                                        <p th:text="${movie.formattedVote}" class="card-text mb-0 text-warning font-weight-bold small"></p>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
+                        </div>
+
+
+                        <!-- 최고 평점 영화 -->
+                        <div class="col-md-6">
+                            <h3 class="text-white font-weight-bold mb-3 medTitle">최고 평점 영화</h3>
+                            <div th:each="movie : ${moviesOfTopRated}" class="mb-3">
+                                <div class="card movie-card p-2 d-flex flex-row align-items-center">
+                                    <img th:src="'https://image.tmdb.org/t/p/w500' + ${movie.posterUrl}" class="poster-img me-3" alt="poster">
+                                    <div class="card-body p-2">
+                                        <h2 th:text="${movie.formattedTitle}" class="card-title mb-1 text-white"></h2><br>
+                                        <p th:text="'인기도: ' + ${movie.popularity}" class="card-text mb-1 text-lightgray small"></p>
+                                        <p th:text="${movie.formattedVote}" class="card-text mb-0 text-warning font-weight-bold small"></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-6 px-4 py-4 bg-review-section" id="index-right-content">
+                    <h3 class="font-weight-bold mb-4 reviewR">리뷰 순위</h3>
+
+                    <div th:each="movie : ${moviesOfTopReview}" class="mb-4">
+                        <div class="card shadow-sm px-3 py-3 reviewC">
+                            <div class="row g-0 align-items-center">
+                                <!-- 포스터 -->
+                                <div class="col-md-3 d-flex justify-content-center">
+                                    <a th:href="@{'/movieDetail/' + ${movie.id}}">
+                                        <img th:src="'https://image.tmdb.org/t/p/w500' + ${movie.posterUrl}"
+                                             class="poster-img-sm rounded" alt="poster">
+                                    </a>
+                                </div>
+
+                                <!-- 내용 -->
+                                <div class="col-md-9">
+                                    <div class="card-body p-2" th:with="review=${bestReviewOfTopReview[movie.id]}">
+
+                                        <!-- 제목 -->
+                                        <h1 th:text="${movie.title}" class="card-title mb-1 fw-bold bigTitle"></h1><br>
+
+                                        <!-- 유저 정보 + 좋아요 -->
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <strong th:text="${review.user.nickname}" class="me-2"></strong>
+                                                <img th:src="@{'/images/badge_' + ${review.user.gradeName.toLowerCase()} + '.png'}"
+                                                     class="badge-img me-2" alt="등급">
+                                                <span th:if="${review.user.gradeLevel >= 4}" class="badge badge-warning">
+                                    🏅 에디터 추천
+                                </span>
+                                            </div>
+                                            <div class="text-end">
+                                <span class="text-primary big fw-bold">
+                                    👍 <span th:text="${review.likeCount}" class="text-dark">0</span>
+                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- 리뷰 내용 -->
+                                        <p class="mb-2 bg-light p-2 rounded small review-content"
+                                           th:text="${review.content}"></p>
+
+                                        <!-- 날짜 -->
+                                        <span class="text-muted small"
+                                              th:text="'작성 날짜: ' + ${#temporals.format(review.displayDate, 'yyyy-MM-dd HH:mm')}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <img src="/images/popcorn_image.png" class="content-img"/>
         </div>
-    </div>
-</section>
+    </section>
+
+
+
+
 </div>
 <script>
   if (window.location.hash === '#_=_') {

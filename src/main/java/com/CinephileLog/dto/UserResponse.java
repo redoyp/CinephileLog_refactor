@@ -20,6 +20,7 @@ public class UserResponse {
     private Long point;
     private Long gradeId;
     private String gradeName;
+    private int gradeLevel;
     private LocalDateTime registerDate;
     private LocalDateTime updatedDate;
 
@@ -33,6 +34,7 @@ public class UserResponse {
         this.point = user.getPoint();
         this.gradeId = user.getGrade().getGradeId();
         this.gradeName = user.getGrade().getGradeName();
+        this.gradeLevel = user.getGrade().getGradeId().intValue();
         this.registerDate = user.getRegisterDate();
         this.updatedDate = user.getUpdatedDate();
     }

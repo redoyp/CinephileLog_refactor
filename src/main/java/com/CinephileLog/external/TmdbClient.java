@@ -45,6 +45,19 @@ public class TmdbClient {
                 .map(map -> mapper.convertValue(map, TmdbMovie.class))
                 .toList();
     }
+    // TMDB API 에서 /movie/top_rated 응답(JSON)은 results라는 키로 영화 리스트를 내줌
+    public List<TmdbMovie> fetchTopRatedMovies() {
+        String url = BASE_URL + "/movie/top_rated?api_key=" + apiKey + "&language=ko&page=1";
+        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<Map<String, Object>> movieList = (List<Map<String, Object>>) response.get("results"); // /movie/top_rated
+
+        return movieList.stream()
+                .map(map -> mapper.convertValue(map, TmdbMovie.class))
+                .toList();
+    }
+
 
 //    public Credits fetchCredits(Long movieId) {
 //        String url = BASE_URL + "/movie/" + movieId + "/credits?api_key=" + apiKey + "&language=ko";

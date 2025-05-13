@@ -38,12 +38,16 @@ public class TmdbMovie {
     @JsonProperty("vote_count")
     private int voteCount;
 
+    @JsonProperty("popularity")
+    private double popularity;
+
     private int rating;
 
     private Credits credits;
 
     private String starRatingVisual;
 
+    // voteAverage 설정 시 rating, starRatingVisual도 자동 설정되도록
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
         this.rating = (int) Math.round(voteAverage);
@@ -57,5 +61,18 @@ public class TmdbMovie {
         int empty = 5 - full - (half ? 1 : 0);
 
         return "★".repeat(full) + (half ? "½" : "") + "☆".repeat(empty) + " (" + voteCount + ")";
+    }
+
+    // 👉 출력용 포맷 문자열 (템플릿에서 사용 가능하도록)
+    public String getFormattedTitle() {
+        return title + " (" + releaseDate + ")";
+    }
+
+    public String getFormattedVote() {
+        return voteAverage + "점 (" + voteCount + "명)";
+    }
+
+    public String getFormattedPopularity() {
+        return "popularity: " + popularity;
     }
 }

@@ -40,43 +40,67 @@ public class HomeViewController {
             model.addAttribute("roleName", session.getAttribute("roleName").toString());
         }
 
-        //Get top 3 movies by popularity
-        List<TmdbMovie> popularMovieList = tmdbClient.fetchMovies();
-
-        List<TmdbMovie> moviesOfTopPopularity = popularMovieList.stream()
+        // ✅ TMDB 인기 영화 3개
+        List<TmdbMovie> moviesOfTopPopularity = tmdbClient.fetchMovies().stream()
                 .limit(3)
                 .toList();
 
-        Map<Long, List<ReviewResponse>> reviewsOfTopPopularity = new HashMap<>();
-        Map<Long, Integer> reviewCountOfTopPopularity = new HashMap<>();
+        // ✅ TMDB 평점 영화 3개
+        List<TmdbMovie> moviesOfTopRated = tmdbClient.fetchTopRatedMovies().stream()
+                .limit(3)
+                .toList();
 
-        for (TmdbMovie movie : moviesOfTopPopularity) {
-            GetMovieReviews(movie.getId(), reviewsOfTopPopularity, reviewCountOfTopPopularity);
+        // ✅ 6개 영화 통합 리뷰 처리
+        List<TmdbMovie> allSixMovies = new ArrayList<>();
+        allSixMovies.addAll(moviesOfTopPopularity);
+        allSixMovies.addAll(moviesOfTopRated);
+
+        Map<Long, List<ReviewResponse>> reviewsMap = new HashMap<>();
+        Map<Long, Integer> reviewCountMap = new HashMap<>();
+
+        for (TmdbMovie movie : allSixMovies) {
+            GetMovieReviews(movie.getId(), reviewsMap, reviewCountMap); // 그대로 유지
         }
 
         model.addAttribute("moviesOfTopPopularity", moviesOfTopPopularity);
-        model.addAttribute("reviewsOfTopPopularity", reviewsOfTopPopularity);
-        model.addAttribute("reviewCountOfTopPopularity", reviewCountOfTopPopularity);
+        model.addAttribute("moviesOfTopRated", moviesOfTopRated);
+        model.addAttribute("reviewsOfSixMovies", reviewsMap);
+        model.addAttribute("reviewCountOfSixMovies", reviewCountMap);
 
-        //Get top 3 movies by review
+        // ✅ 우리 DB 기준 리뷰 수 가장 많은 영화 3개
         List<Long> topReviewMovieList = reviewService.findTop3MovieIdsByReview();
         List<MovieResponse> moviesOfTopReview = topReviewMovieList.stream()
                 .map(movieService::getMovieDetail)
                 .toList();
 
-        Map<Long, List<ReviewResponse>> reviewsOfTopReview = new HashMap<>();
+        // ✅ 영화별 좋아요 수 많은 리뷰 1개
+        Map<Long, ReviewResponse> bestReviewOfTopReview = new HashMap<>();
         Map<Long, Integer> reviewCountOfTopReview = new HashMap<>();
 
         for (Long movieId : topReviewMovieList) {
-            GetMovieReviews(movieId, reviewsOfTopReview, reviewCountOfTopReview);
+            try {
+                List<ReviewResponse> allReviews = reviewService.getAllReviews(movieId);
+
+                ReviewResponse mostLiked = allReviews.stream()
+                        .max(Comparator.comparingLong(ReviewResponse::getLikeCount))
+                        .orElse(null);
+
+                bestReviewOfTopReview.put(movieId, mostLiked);
+                reviewCountOfTopReview.put(movieId, allReviews.size());
+
+            } catch (Exception e) {
+                bestReviewOfTopReview.put(movieId, null);
+                reviewCountOfTopReview.put(movieId, 0);
+            }
         }
 
         model.addAttribute("moviesOfTopReview", moviesOfTopReview);
-        model.addAttribute("reviewsOfTopReview", reviewsOfTopReview);
+        model.addAttribute("bestReviewOfTopReview", bestReviewOfTopReview);
         model.addAttribute("reviewCountOfTopReview", reviewCountOfTopReview);
 
         return "index";
     }
+
 
     //Get sample movie reviews and total review count per movie
     private void GetMovieReviews(Long movieId,
