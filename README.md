@@ -232,18 +232,18 @@
 ## 5. 주요 기능
 <br>
 
-🔍 **영화 자동완성 검색** (ElasticSearch)  <br>
-📝 **리뷰 작성 및 좋아요**  <br>
-💿 **영화 정보 조회** (Redis)  <br>
-📰 **칼럼 작성** (4등급 이상 유저만 가능)  <br>
-💬 **실시간 채팅방** (WebSocket 기반)  <br>
-💾 **영화 플레이리스트 저장** (하트 + 리스트 선택/생성)  <br>
-🎬 **인기영화 정보 조회**  <br>
-🔑 **소셜 로그인/로그아웃** (OAuth2)  <br>
-🧑🏻 **프로필 정보 수정**  <br>
-🎯 **등급 시스템** (jelly → coke → nachos → hotdog → popcorn)  <br>
-🧩 **Spring Batch 기반 TMDB API 연동** (API Key 병렬 처리 및 배치작업을 통한 RDS 저장)  <br>
-🗃️ **관리자 페이지** (회원, 리뷰 관리)
+&emsp;🔍 **영화 자동완성 검색** (ElasticSearch)  <br>
+&emsp;📝 **리뷰 작성 및 좋아요**  <br>
+&emsp;💿 **영화 정보 조회** (Redis)  <br>
+&emsp;📰 **칼럼 작성** (4등급 이상 유저만 가능)  <br>
+&emsp;💬 **실시간 채팅방** (WebSocket 기반)  <br>
+&emsp;💾 **영화 플레이리스트 저장** (하트 + 리스트 선택/생성)  <br>
+&emsp;🎬 **인기영화 정보 조회**  <br>
+&emsp;🔑 **소셜 로그인/로그아웃** (OAuth2)  <br>
+&emsp;🧑🏻 **프로필 정보 수정**  <br>
+&emsp;🎯 **등급 시스템** (jelly → coke → nachos → hotdog → popcorn)  <br>
+&emsp;🧩 **Spring Batch 기반 TMDB API 연동** (API Key 병렬 처리 및 배치작업을 통한 RDS 저장)  <br>
+&emsp;🗃️ **관리자 페이지** (회원, 리뷰 관리)
 
 <br>
 
