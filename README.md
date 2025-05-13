@@ -254,7 +254,7 @@
 |---|---|
 | Backend | Spring Boot, Spring Security, JPA, MyBatis, Spring Batch, WebSocket, WebFlux, OAuth2 |
 | Frontend | Thymeleaf + Bootstrap, jQuery, JS, CSS |
-| Search | AWS Elasticsearch |
+| Search | Elasticsearch |
 | DB | AWS RDS(MySQL), Redis |
 | Infra | AWS EC2, Nginx, Let's Encrypt |
 | 인증 | OAuth2 (Google, Kakao, Facebook) |
