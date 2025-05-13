@@ -1,4 +1,4 @@
-![image (3)](https://github.com/user-attachments/assets/ee90edc8-444e-4399-b270-3ab611a84c44)# 🎬 CinephileLog
+🎬 CinephileLog
 
 > 영화 마니아들을 위한 리뷰 & 커뮤니티 플랫폼  
 > TMDB API 기반 검색, 리뷰, 칼럼, 채팅, 플레이리스트 등 다양한 소셜 기능 제공
