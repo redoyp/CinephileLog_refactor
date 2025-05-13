@@ -77,7 +77,9 @@
                             <h3 class="text-white font-weight-bold mb-3 medTitle">인기 영화</h3>
                             <div th:each="movie : ${moviesOfTopPopularity}" class="mb-3">
                                 <div class="card movie-card p-2 d-flex flex-row align-items-center leftCard">
+                                    <a th:href="@{'/movieDetail/' + ${movie.id}}">
                                     <img th:src="'https://image.tmdb.org/t/p/w500' + ${movie.posterUrl}" class="poster-img me-3" alt="poster">
+                                    </a>
                                     <div class="card-body p-2">
                                         <h2 th:text="${movie.formattedTitle}" class="card-title mb-1 text-white"></h2><br>
                                         <p th:text="'인기도: ' + ${movie.popularity}" class="card-text mb-1 text-lightgray small"></p>
@@ -93,7 +95,9 @@
                             <h3 class="text-white font-weight-bold mb-3 medTitle">최고 평점 영화</h3>
                             <div th:each="movie : ${moviesOfTopRated}" class="mb-3">
                                 <div class="card movie-card p-2 d-flex flex-row align-items-center">
+                                    <a th:href="@{'/movieDetail/' + ${movie.id}}">
                                     <img th:src="'https://image.tmdb.org/t/p/w500' + ${movie.posterUrl}" class="poster-img me-3" alt="poster">
+                                    </a>
                                     <div class="card-body p-2">
                                         <h2 th:text="${movie.formattedTitle}" class="card-title mb-1 text-white"></h2><br>
                                         <p th:text="'인기도: ' + ${movie.popularity}" class="card-text mb-1 text-lightgray small"></p>
