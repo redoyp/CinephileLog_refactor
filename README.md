@@ -403,7 +403,7 @@
 ![Main Page 1](https://github.com/user-attachments/assets/997e725f-3a49-4617-a4d6-9bf6383158a6)
 
 ### 🏠 Main Page 2  
-![Main Page 2](https://github.com/user-attachments/assets/1720b1e5-89a6-4a8e-9bd9-6e9b00d23c71)
+![image](https://github.com/user-attachments/assets/ee391c6d-9e4b-48d8-8fd1-2abb0e53419d)
 
 ### 📰 Movie Column  
 ![Movie Column](https://github.com/user-attachments/assets/0b127528-f046-49fc-aa77-a1500dcafc48)
