@@ -18,13 +18,13 @@
       <div class="col-md-9">
         <h2 th:text="${column.title}">칼럼 제목</h2>
         <div class="text-muted mb-3">
-          영화: <span th:text="${column.movieTitle}"></span><br>
-          작성자: <span th:text="${column.nickname}"></span><br>
-          작성일: <span th:text="${#dates.format(column.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+          <strong>영화</strong> : <span th:text="${column.movieTitle}"></span><br>
+          <strong>작성자</strong> : <span th:text="${column.nickname}"></span><br>
+            <strong>작성일</strong> : <span th:text="${#dates.format(column.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
           <span th:if="${column.updatedDate != null and column.updatedDate != column.createdDate}">
-                        (수정됨: <span th:text="${#dates.format(column.updatedDate, 'yyyy-MM-dd HH:mm')}"></span>)
+                        (<strong>수정됨</strong> : <span th:text="${#dates.format(column.updatedDate, 'yyyy-MM-dd HH:mm')}"></span>)
                     </span><br>
-          조회수: <span th:text="${column.viewCount}"></span>
+              <strong>조회수</strong> : <span th:text="${column.viewCount}"></span>
         </div>
         <hr>
         <div th:text="${column.content}" style="white-space: pre-line; margin-bottom: 168px"></div>
