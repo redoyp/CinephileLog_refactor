@@ -24,4 +24,7 @@
                                  like_count = VALUES(like_count),
                                  weighted_score = VALUES(weighted_score);
     </insert>
+    <delete id="deleteUserById" parameterType="long">
+        DELETE FROM user_score WHERE user_id = #{userId}
+    </delete>
 </mapper>

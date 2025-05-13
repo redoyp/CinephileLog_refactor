@@ -9,4 +9,6 @@ import java.util.List;
 public interface UserScoreMapper {
     List<UserScoreDTO> selectEligibleUsers();
     void upsertUserScore(UserScoreDTO dto);
+
+    void deleteUserById(Long userId);
 }

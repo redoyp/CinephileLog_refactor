@@ -1,7 +1,9 @@
 package com.CinephileLog.service;
 
 import com.CinephileLog.domain.User;
+import com.CinephileLog.mapper.UserScoreMapper;
 import com.CinephileLog.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +16,12 @@ import java.util.NoSuchElementException;
 public class AdminUserManagementService {
 
     private final UserRepository userRepository;
+    private final UserScoreMapper userScoreMapper;
 
     @Autowired
-    public AdminUserManagementService(UserRepository userRepository) {
+    public AdminUserManagementService(UserRepository userRepository, UserScoreMapper userScoreMapper) {
         this.userRepository = userRepository;
+        this.userScoreMapper = userScoreMapper;
     }
 
     public List<User> getAllUsers() {
@@ -46,6 +50,7 @@ public class AdminUserManagementService {
 
     @Transactional
     public void deleteUser(Long userId) {
+        userScoreMapper.deleteUserById(userId);
         userRepository.deleteById(userId);
     }
 
