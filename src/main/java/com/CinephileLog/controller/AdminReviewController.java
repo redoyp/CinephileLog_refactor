@@ -35,12 +35,6 @@ public class AdminReviewController {
         return "admin/review/list";
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteReview(@PathVariable Long id) {
-        reviewService.deleteReview(id);
-        return "redirect:/admin/reviews";
-    }
-
     @GetMapping("/{id}")
     public String reviewDetail(@PathVariable Long id, @RequestParam(value = "keyword", required = false) String keyword, Model model) {
         ReviewResponse review = reviewService.getReviewById(id);
