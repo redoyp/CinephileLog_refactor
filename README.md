@@ -1,4 +1,4 @@
-🎬 CinephileLog
+# 🎬 CinephileLog
 
 > 영화 마니아들을 위한 리뷰 & 커뮤니티 플랫폼  
 > TMDB API 기반 검색, 리뷰, 칼럼, 채팅, 플레이리스트 등 다양한 소셜 기능 제공
@@ -29,14 +29,14 @@
 >
 > 고민하고 계신가요?  
 >
-> **"CinephileLog"**는 영화 추천부터 소통까지 영화에 대한 모든 것을 제공하는 커뮤니티 플랫폼입니다.  
+> "CinephileLog"는 영화 추천부터 소통까지 영화에 대한 모든 것을 제공하는 커뮤니티 플랫폼입니다.  
 > 생각과 감정을 공유하고, 같은 취향을 가진 사람들과 소통하며 즐거움을 키워보세요!
 >
-> ✔ 인기 영화 / 리뷰  
-> ✔ 상위 등급 유저는 리뷰 노출 & 이벤트 응모  
-> ✔ 칼럼 & 리뷰 작성  
-> ✔ 영화별 실시간 채팅  
-> ✔ 나만의 플레이리스트 기능  
+> 인기 영화 / 리뷰
+> 영화 상세 정보  
+> 칼럼 & 리뷰 작성
+> 영화별 실시간 채팅  
+> 나만의 플레이리스트 기능  
 
 
 ## 2. 팀원
@@ -88,6 +88,7 @@
 <details>
 <summary> 👤 2단계: 회원 기능</summary>  
 <br>
+
 - [✅] 회원가입 : Oauth를 통한 소셜로그인
 - [✅] 로그인 / 로그아웃
 - [✅] 회원 탈퇴
@@ -99,6 +100,7 @@
 <details>
 <summary>🔐 3단계: 등급별 기능 제한</summary>  
 <br>
+
 - [✅] 나만의 플레이리스트 : 2등급(coke) 이상만 가능
 - [✅] 영화 채팅방 접근 : 3등급(nachos) 이상만 가능
 - [✅] 칼럼 작성: 4등급(hotdog) 이상만 가능
@@ -109,6 +111,7 @@
 <details>
 <summary> 🛠️ 4단계: 관리자 페이지</summary>  
 <br>
+
 - [✅] 유저 조회 (가입일, 접속 정보 등)
 - [✅] 유저 권한/등급 수정
 - [✅] 유저/리뷰 목록 검색 & 정렬
@@ -119,6 +122,7 @@
 <details>
 <summary>🚀 5단계: 서비스 배포</summary>  
 <br>
+
 - [✅] AWS EC2 기반 배포
   - Amazon Linux 2023 + Spring Boot 실행
   - Nginx를 이용한 리버스 프록시 구성
@@ -189,10 +193,10 @@
 <summary>🔑 소셜 로그인/로그아웃 (OAuth2)</summary><br> 
 
 - **OAuth2** 를 사용하여 각자 provider의 client id 하고 secret code로 로그인/로그아웃 
-  - 로그인 성공하면 회원 정보 (이메일, provider)를 저장
-  - 로그아웃은 OAuth2 하고 Spring Security에 로그아웃
+  - 로그인 성공하면 회원 정보를 저장
+  - OAuth2를 통해 Spring Security에서 로그아웃
   - Provider: Kakao, Google, Facebook
-- 회원 탈퇴한후에 OAuth2 하고 Spring Security에 로그아웃
+  - 회원 탈퇴시 OAuth2를 통해 Spring Security에 로그아웃
 
 </details>
 
@@ -219,18 +223,18 @@
 ## 5. 주요 기능
 <br>
 
-- 🔍 **영화 자동완성 검색** (ElasticSearch)
-- 📝 **리뷰 작성 및 좋아요**
-- 💿 **영화 정보 조회** (Redis)
-- 📰 **칼럼 작성** (4등급 이상 유저만 가능)
-- 💬 **실시간 채팅방** (WebSocket 기반)
-- 💾 **영화 플레이리스트 저장** (하트 + 리스트 선택/생성)
-- 🎬 **인기영화 정보 조회**
-- 🔑 **소셜 로그인/로그아웃** (OAuth2)
-- 🧑🏻 **프로필 정보 수정**
-- 🎯 **등급 시스템** (jelly → coke → nachos → hotdog → popcorn)
-- 🧩 **Spring Batch 기반 TMDB API 연동** (API Key 병렬 처리 및 배치작업을 통한 RDS 저장)
-- 🗃️ **관리자 페이지** (회원, 리뷰 관리)
+🔍 **영화 자동완성 검색** (ElasticSearch)
+📝 **리뷰 작성 및 좋아요**
+💿 **영화 정보 조회** (Redis)
+📰 **칼럼 작성** (4등급 이상 유저만 가능)
+💬 **실시간 채팅방** (WebSocket 기반)
+💾 **영화 플레이리스트 저장** (하트 + 리스트 선택/생성)
+🎬 **인기영화 정보 조회**
+🔑 **소셜 로그인/로그아웃** (OAuth2)
+🧑🏻 **프로필 정보 수정**
+🎯 **등급 시스템** (jelly → coke → nachos → hotdog → popcorn)
+🧩 **Spring Batch 기반 TMDB API 연동** (API Key 병렬 처리 및 배치작업을 통한 RDS 저장)
+🗃️ **관리자 페이지** (회원, 리뷰 관리)
 
 ## 6. 기술 스택
 <br>
@@ -251,22 +255,22 @@
 
 
 ```
-CinephileLog/
-├── column/         # 칼럼 도메인 (작성, 조회 등)
-├── config/         # Redis, Elasticsearch 등 외부 설정
-├── configuration/  # Spring Security 설정
-├── controller/     # 메인 화면, 검색, 유저, 채팅 등 API/view 컨트롤러
-├── domain/         # 공통 도메인 (User, Playlist, Grade, Chat 등)
-├── dto/            # 요청/응답 DTO 클래스
-├── external/
-│   ├── batch/      # TMDB 연동 Spring Batch 처리
-│   └── service/    # TMDB API Client 로직
-├── handler/        # 전역 예외 처리 핸들러
-├── mapper/         # MyBatis 매퍼 인터페이스
-├── movie/          # 영화 도메인
-├── repository/     # JPA/QueryDSL 등 저장소 레이어
-├── review/         # 리뷰 도메인
-└── service/        # 비즈니스 로직 처리 서비스 클래스
+📁 CinephileLog/
+      ├── 📝 column/ — 칼럼 도메인 (작성, 조회 등)
+      ├── ⚙️ config/ — Redis, Elasticsearch 등 외부 설정
+      ├── 🔐 configuration/ — Spring Security 설정
+      ├── 🧭 controller/ — 메인 화면, 검색, 유저, 채팅 등 API/view 컨트롤러
+      ├── 🧩 domain/ — 공통 도메인 (User, Playlist, Grade, Chat 등)
+      ├── 📦 dto/ — 요청/응답 DTO 클래스
+      ├── 🌐 external/
+                ├── 📊 batch/ — TMDB 연동 Spring Batch 처리
+                └── 🔌 service/ — TMDB API Client 로직
+      ├── 🛡️ handler/ — 전역 예외 처리 핸들러
+      ├── 🗺 mapper/ — MyBatis 매퍼 인터페이스
+      ├── 🎬 movie/ — 영화 도메인
+      ├── 🗃️ repository/ — JPA/QueryDSL 등 저장소 레이어
+      ├── 💬 review/ — 리뷰 도메인
+      └── 🧠 service/ — 비즈니스 로직 처리 서비스 클래스
 ```
 
 
@@ -380,72 +384,58 @@ CinephileLog/
 </details>
 
 ## 9. 화면 설계
-<br>
 
-### 🏡Main Page1
+<details>
+<summary>🖼️ 화면 설계</summary><br>
 
-![image](https://github.com/user-attachments/assets/997e725f-3a49-4617-a4d6-9bf6383158a6)
+### 🏠 Main Page 1  
+![Main Page 1](https://github.com/user-attachments/assets/997e725f-3a49-4617-a4d6-9bf6383158a6)
 
-### 🏡Main Page2
+### 🏠 Main Page 2  
+![Main Page 2](https://github.com/user-attachments/assets/1720b1e5-89a6-4a8e-9bd9-6e9b00d23c71)
 
-![image (1)](https://github.com/user-attachments/assets/1720b1e5-89a6-4a8e-9bd9-6e9b00d23c71)
+### 📰 Movie Column  
+![Movie Column](https://github.com/user-attachments/assets/0b127528-f046-49fc-aa77-a1500dcafc48)
 
-### 🎬Movie Column
+### 💬 Chat Room  
+![Chat Room](https://github.com/user-attachments/assets/064e9c94-a488-4af4-9a97-3099fd8f96ad)
 
-![image (2)](https://github.com/user-attachments/assets/0b127528-f046-49fc-aa77-a1500dcafc48)
+### 🎖️ Grade Description Page  
+![Grade Description Page](https://github.com/user-attachments/assets/6c9bd2a9-5b90-4689-9db4-b14565d80771)
 
-### 📱Chat Room
+### 🙍🏻 My Profile  
+![My Profile](https://github.com/user-attachments/assets/eed6ce99-f903-42b9-9353-1c6d9bfcf7ca)
 
-![image (3)](https://github.com/user-attachments/assets/064e9c94-a488-4af4-9a97-3099fd8f96ad)
+### 👨‍💼 Admin - User Management  
+![Admin - User Management](https://github.com/user-attachments/assets/cc0f99b2-03e7-43f5-8d60-97a8e9d62b7b)
 
+### 🗂️ Admin - Review Management  
+![Admin - Review Management](https://github.com/user-attachments/assets/61ed966a-a3e6-4b6b-b2e8-aab200f4233f)
 
-### 🎖Grade Description Page
-![image (4)](https://github.com/user-attachments/assets/6c9bd2a9-5b90-4689-9db4-b14565d80771)
+### 📝 Sign Up - Set Nickname  
+![Sign Up](https://github.com/user-attachments/assets/83131c52-1b50-4e32-8d69-572b2dfa498c)
 
-### 📔My Profile
+### 🔐 Log In Page  
+![Log In](https://github.com/user-attachments/assets/e4efee95-b7a7-4cc9-8009-62e4c8872ab4)
 
-![image (5)](https://github.com/user-attachments/assets/eed6ce99-f903-42b9-9353-1c6d9bfcf7ca)
+### 📰 Movie Column Create  
+![Movie Column Create](https://github.com/user-attachments/assets/de22ed82-dcc4-4705-9502-0eb6d7ab98a9)
 
-### 📘Admin - User Management Page
+### 👁️ Movie Review  
+![Movie Review](https://github.com/user-attachments/assets/5777a571-a088-4b61-8910-b0145cc132fa)
 
-![image (6)](https://github.com/user-attachments/assets/cc0f99b2-03e7-43f5-8d60-97a8e9d62b7b)
+### 🧑 Admin Main Page  
+![Admin Main](https://github.com/user-attachments/assets/1470043d-8e1a-42bd-89b0-39cc43fd6055)
 
-### 📘Admin - Review Management Page
+### 🧾 Admin - User Management Edit  
+![User Management Edit](https://github.com/user-attachments/assets/b0878ed2-a261-4d9e-a93b-4f7b1c8014fb)
 
-![image (7)](https://github.com/user-attachments/assets/61ed966a-a3e6-4b6b-b2e8-aab200f4233f)
-
-### 📝Sign Up - Set Nickname
-
-![image (8)](https://github.com/user-attachments/assets/83131c52-1b50-4e32-8d69-572b2dfa498c)
-
-### 🔒Log In Page
-
-![image (9)](https://github.com/user-attachments/assets/e4efee95-b7a7-4cc9-8009-62e4c8872ab4)
-
-### 📢Movie Column Create
-
-![image (10)](https://github.com/user-attachments/assets/de22ed82-dcc4-4705-9502-0eb6d7ab98a9)
-
-### 👓Movie Review
-
-![image (11)](https://github.com/user-attachments/assets/5777a571-a088-4b61-8910-b0145cc132fa)
-
-### 👨🏻‍✈️Admin Main Page
-
-![image (12)](https://github.com/user-attachments/assets/1470043d-8e1a-42bd-89b0-39cc43fd6055)
-
-### Admin - User Management Modification Page
-
-![image (13)](https://github.com/user-attachments/assets/b0878ed2-a261-4d9e-a93b-4f7b1c8014fb)
-
-### Admin - Review Management Modification Page
-
-![image (14)](https://github.com/user-attachments/assets/11e424df-a6ee-4c06-b42f-f801a967b577)
+### ✏️ Admin - Review Management Edit  
+![Review Management Edit](https://github.com/user-attachments/assets/11e424df-a6ee-4c06-b42f-f801a967b577)
 
 </details>
 
 ## 10. API 명세서
-<br> 
 
 ### 📁 User
 
