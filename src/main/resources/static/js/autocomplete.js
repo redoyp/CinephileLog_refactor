@@ -24,6 +24,8 @@ $(function () {
                     return;
                 }
 
+                const regex = new RegExp(`(${keyword})`, 'gi');
+
                 data.forEach(item => {
                     const hasPoster = item.posterUrl;
                     const imageTag = hasPoster
@@ -33,13 +35,15 @@ $(function () {
                                 onerror="this.style.display='none'">`
                         : '';
 
+                    const titleHighlighted = item.title.replace(regex, '<span class="highlight">$1</span>');
+
                     const li = `
                         <li class="list-group-item autocomplete-item"
                             data-title="${item.title}"
                             data-movieid="${item.movieId}">
                             <div class="d-flex align-items-center">
                                 ${imageTag}
-                                <span>${item.title} (${item.releaseYear || ''})</span>
+                                <span>${titleHighlighted} (${item.releaseYear || ''})</span>
                             </div>
                         </li>`;
                     $list.append(li);
@@ -51,7 +55,6 @@ $(function () {
         });
     });
 
-    // 클릭 시 상세 페이지로 이동
     $list.on('click', '.autocomplete-item', function () {
         const movieId = $(this).data('movieid');
         if (movieId) {
@@ -59,7 +62,6 @@ $(function () {
         }
     });
 
-    // 바깥 클릭 시 리스트 제거
     $(document).on('click', function (e) {
         if (!$(e.target).closest('#searchForm').length) {
             $list.empty();
