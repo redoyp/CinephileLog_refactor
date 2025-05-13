@@ -385,9 +385,6 @@
 
 ## 9. 화면 설계
 
-<details>
-<summary>🖼️ 화면 설계</summary><br>
-
 ### 🏠 Main Page 1  
 ![Main Page 1](https://github.com/user-attachments/assets/997e725f-3a49-4617-a4d6-9bf6383158a6)
 
@@ -432,8 +429,6 @@
 
 ### ✏️ Admin - Review Management Edit  
 ![Review Management Edit](https://github.com/user-attachments/assets/11e424df-a6ee-4c06-b42f-f801a967b577)
-
-</details>
 
 ## 10. API 명세서
 
