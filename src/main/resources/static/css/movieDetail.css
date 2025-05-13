@@ -176,7 +176,7 @@ body {
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    padding: 1.2rem;
+    padding: 0.6rem;
     margin-bottom: 1rem;
     transition: transform 0.2s ease;
 }
@@ -320,15 +320,16 @@ body {
 }
 
 
-/* 페이지네이션 스타일 */
 .pagination-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    clear: both;
+    position: sticky;
+    bottom: 0;
+    padding: 10px 0;
+    z-index: 10;
 }
 
+
 .pagination-btn {
-    background-color: #f8f9fa;
     color: #007bff;
     border: 1px solid #007bff;
     padding: 5px 10px;
