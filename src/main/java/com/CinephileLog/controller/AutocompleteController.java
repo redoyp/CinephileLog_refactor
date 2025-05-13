@@ -28,9 +28,10 @@ public class AutocompleteController {
     public List<Map<String, String>> autocomplete(@RequestParam("keyword") String keyword) throws IOException {
         if (keyword == null || keyword.length() < 2) return List.of();
 
-        SearchRequest request = new SearchRequest("movies");
+        SearchRequest request = new SearchRequest("movies_autocomplete");
+
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
-                .query(QueryBuilders.prefixQuery("title", keyword.toLowerCase()))
+                .query(QueryBuilders.matchQuery("title", keyword.toLowerCase()))
                 .size(10);
 
         request.source(sourceBuilder);
@@ -48,6 +49,8 @@ public class AutocompleteController {
         }
         return results;
     }
+
+
 }
 
 

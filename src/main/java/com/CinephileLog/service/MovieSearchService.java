@@ -10,12 +10,12 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +29,8 @@ public class MovieSearchService {
             SearchRequest request = new SearchRequest("movies");
 
             BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.termQuery("title.keyword", keyword))
-                    .should(QueryBuilders.matchQuery("title", keyword));
+                    .should(QueryBuilders.matchQuery("title", keyword)) // 중간 단어 검색
+                    .should(QueryBuilders.matchQuery("title.autocomplete", keyword)); // 접두어 기반
 
             SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
                     .query(boolQuery)
@@ -38,20 +38,22 @@ public class MovieSearchService {
                     .size(size);
 
             request.source(sourceBuilder);
-
             SearchResponse response = esClient.search(request, RequestOptions.DEFAULT);
 
-            List<String> movieIds = Arrays.stream(response.getHits().getHits())
-                    .map(hit -> hit.getSourceAsMap().get("movieId").toString())
-                    .collect(Collectors.toList());
+            List<Long> movieIds = new ArrayList<>();
+            for (SearchHit hit : response.getHits().getHits()) {
+                Object movieIdObj = hit.getSourceAsMap().get("movieId");
+                if (movieIdObj != null) {
+                    try {
+                        movieIds.add(Long.parseLong(movieIdObj.toString()));
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
 
-            return movieRepository.findByIdIn(
-                    movieIds.stream().map(Long::parseLong).collect(Collectors.toList())
-            );
+            return movieRepository.findByIdIn(movieIds);
 
         } catch (IOException e) {
             throw new RuntimeException("검색 실패", e);
         }
     }
-
 }

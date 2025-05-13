@@ -16,7 +16,7 @@ public class BatchRunner implements CommandLineRunner {
     private final JobLauncher jobLauncher;
     private final Job movieFetchJob;
 
-    @Value("${movie.data.init:false}")
+    @Value("${movie.data.init}")
     private boolean init;
 
     @Override
