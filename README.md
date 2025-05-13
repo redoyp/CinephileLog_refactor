@@ -8,6 +8,8 @@
 ---
 
 ## 📑 목차
+<br>
+
 - [1. 프로젝트 소개](#1-프로젝트-소개)
 - [2. 팀원](#2-팀원)
 - [3. 프로젝트 요구사항 체크리스트](#3-프로젝트-요구사항-체크리스트)
@@ -20,8 +22,10 @@
 - [10. API 명세서](#10-api-명세서)
 
 ---
+<br>
 
 ## 1. 프로젝트 소개
+
 <br>
 
 > ‘ 아.. 오늘은 영화 뭐 보지? ‘  
@@ -38,6 +42,7 @@
 > 영화별 실시간 채팅  
 > 나만의 플레이리스트 기능  
 
+<br>
 
 ## 2. 팀원
 <br>
@@ -50,6 +55,7 @@
 | Elini | [elini-ng](https://github.com/elini-ng) |
 | 오시완 | [ohsiwan](https://github.com/ohsiwan) |
 
+<br>
 
 ## 3. 프로젝트 요구사항 체크리스트
 <br>
@@ -143,6 +149,7 @@
   - Spring Boot와 외부 콘솔 설정 정확히 매칭
 
 </details>
+<br>
 
 ## 4. 서비스 특징
 <br>
@@ -150,91 +157,95 @@
 <details>
 <summary>🗃️ TMDB 영화 데이터 수집 (배치 시스템)</summary><br>
 
-- Spring Batch 기반으로 영화 ID 범위를 파티셔닝하여 병렬로 TMDB API 호출
-- 각 파티션은 고유한 ID 범위와 API 키를 할당받아 비동기 방식으로 처리
-- `TmdbApiClient`는 아래 세 가지 요청을 병렬 수행하여 영화 정보를 수집
-  - 영화 상세 정보 (ko-KR)
-  - 영화 상세 정보 (en-US)
-  - 출연진 및 제작진 정보 (credits)
-- 중복된 movieId는 DB 조회로 필터링하여 저장
-- 응답 데이터를 `Movie` 엔티티로 가공 후 JPA를 통해 저장
-- WebClient를 Reactor Netty 기반으로 구성하여 TMDB API를 비동기/병렬로 안정적으로 호출
-- 커넥션 풀, 연결 타임아웃, 응답 타임아웃, 재시도 설정으로 네트워크 신뢰성 보장
+  - Spring Batch 기반으로 영화 ID 범위를 파티셔닝하여 병렬로 TMDB API 호출  
+  - 각 파티션은 고유한 ID 범위와 API 키를 할당받아 비동기 방식으로 처리  
+  - `TmdbApiClient`는 아래 세 가지 요청을 병렬 수행하여 영화 정보를 수집  
+    - 영화 상세 정보 (ko-KR)  
+    - 영화 상세 정보 (en-US)  
+    - 출연진 및 제작진 정보 (credits)  
+  - 중복된 movieId는 DB 조회로 필터링하여 저장  
+  - 응답 데이터를 `Movie` 엔티티로 가공 후 JPA를 통해 저장  
+  - WebClient를 Reactor Netty 기반으로 구성하여 TMDB API를 비동기/병렬로 안정적으로 호출  
+  - 커넥션 풀, 연결 타임아웃, 응답 타임아웃, 재시도 설정으로 네트워크 신뢰성 보장  
 
 </details>
 
 <details>
 <summary>🔍 영화 검색 시스템 (Elasticsearch 기반)</summary><br>
 
-- **Elasticsearch** 기반으로 검색 인덱스를 구축하여 빠르고 정확한 검색 기능 제공
-- **자동완성(Auto-complete)** 기능:  
-  - 영화 제목을 기준으로 한 실시간 자동완성 구현
-  - **한글은 2자**, **영어는 3자** 입력부터 검색 수행
-  - Elasticsearch와 연동된 API를 통해 효율적인 데이터 스트리밍 구현
-- 검색 결과는 영화 포스터, 제목, 개요를 포함하며 각 항목은 `movieDetail/{movieId}` 링크로 연결
-- Elasticsearch 인덱싱은 배치 수집 시 자동으로 동기화됨
+  - **Elasticsearch** 기반으로 검색 인덱스를 구축하여 빠르고 정확한 검색 기능 제공  
+  - **자동완성(Auto-complete)** 기능:  
+    - 영화 제목을 기준으로 한 실시간 자동완성 구현  
+    - **한글은 2자**, **영어는 3자** 입력부터 검색 수행  
+    - Elasticsearch와 연동된 API를 통해 효율적인 데이터 스트리밍 구현  
+  - 검색 결과는 영화 포스터, 제목, 개요를 포함하며 각 항목은 `movieDetail/{movieId}` 링크로 연결  
+  - Elasticsearch 인덱싱은 배치 수집 시 자동으로 동기화됨  
 
 </details>
 
 <details>
-<summary>💿 영화 정보 조회 (Redis)</summary><br> 
+<summary>💿 영화 정보 조회 (Redis)</summary><br>
 
-- **Redis** 를 사용하여 DB 부하를 줄이고 응답 속도를 높임
-- movieId에 해당하는 영화 정보 조회 
-	- 첫 조회 시에는 DB에서 데이터를 가져와 Redis 캐시로 저장
-	- 이후 동일한 요청은 캐시를 통해 빠르게 응답
-	- 캐시 데이터는 60분(Time-To-Live) 동안 유지, 이후 자동으로 만료
-- Key-Value 형식으로 Key: movieId - Value: movieId에 해당하는 영화 정보를 캐시 저장
-- 서버 부하 감소와 응답 속도 개선이라는 이점이 있음
-
-</details>
-
-<details>
-<summary>🔑 소셜 로그인/로그아웃 (OAuth2)</summary><br> 
-
-- **OAuth2** 를 사용하여 각자 provider의 client id 하고 secret code로 로그인/로그아웃 
-  - 로그인 성공하면 회원 정보를 저장
-  - OAuth2를 통해 Spring Security에서 로그아웃
-  - Provider: Kakao, Google, Facebook
-  - 회원 탈퇴시 OAuth2를 통해 Spring Security에 로그아웃
+  - **Redis** 를 사용하여 DB 부하를 줄이고 응답 속도를 높임  
+  - movieId에 해당하는 영화 정보 조회  
+    - 첫 조회 시에는 DB에서 데이터를 가져와 Redis 캐시로 저장  
+    - 이후 동일한 요청은 캐시를 통해 빠르게 응답  
+    - 캐시 데이터는 60분(Time-To-Live) 동안 유지, 이후 자동으로 만료  
+  - Key-Value 형식으로 Key: movieId - Value: movieId에 해당하는 영화 정보를 캐시 저장  
+  - 서버 부하 감소와 응답 속도 개선이라는 이점이 있음  
 
 </details>
 
 <details>
-<summary>🔒 관리자 페이지</summary><br>  
+<summary>🔑 소셜 로그인/로그아웃 (OAuth2)</summary><br>
 
-- `/admin/**` 경로를 통해 접근 가능한 관리자 인터페이스를 제공하여 운영 및 관리에 필요한 주요 기능 관리
-- **회원 관리** 기능:
-	- 등록된 모든 회원 목록 조회
-	- 특정 회원의 정보 수정
-	- 특정 회원의 계정 삭제
-	- 닉네임 기반으로 회원 검색 
-- **리뷰 관리** 기능:
-	- 등록된 모든 리뷰 목록 조회
-	- 닉네임, 리뷰 내용, 영화 제목 기반으로 리뷰 검색
-	- 특정 리뷰 상세 정보 
-	- 특정 리뷰를 숨김 처리하여 회원에게 보이지 않도록 설정
-	- 숨김 처리된 리뷰를 다시 보이도록 해제
-- 회원에게 등급(Grade)을 부여하고 권한(Role)을 설정해 서비스 접근 권한 관리
-- 로그인한 회원이 관리자 권한(ROLE_ADMIN)을 가지고 있는지 확인하여 관리자 전용 기능 접근 제어
+  - **OAuth2** 를 사용하여 각자 provider의 client id 하고 secret code로 로그인/로그아웃  
+    - 로그인 성공하면 회원 정보를 저장  
+    - OAuth2를 통해 Spring Security에서 로그아웃  
+    - Provider: Kakao, Google, Facebook  
+    - 회원 탈퇴시 OAuth2를 통해 Spring Security에 로그아웃  
 
 </details>
+
+<details>
+<summary>🔒 관리자 페이지</summary><br>
+
+  - `/admin/**` 경로를 통해 접근 가능한 관리자 인터페이스를 제공하여 운영 및 관리에 필요한 주요 기능 관리  
+  - **회원 관리** 기능:  
+    - 등록된 모든 회원 목록 조회  
+    - 특정 회원의 정보 수정  
+    - 특정 회원의 계정 삭제  
+    - 닉네임 기반으로 회원 검색  
+  - **리뷰 관리** 기능:  
+    - 등록된 모든 리뷰 목록 조회  
+    - 닉네임, 리뷰 내용, 영화 제목 기반으로 리뷰 검색  
+    - 특정 리뷰 상세 정보  
+    - 특정 리뷰를 숨김 처리하여 회원에게 보이지 않도록 설정  
+    - 숨김 처리된 리뷰를 다시 보이도록 해제  
+  - 회원에게 등급(Grade)을 부여하고 권한(Role)을 설정해 서비스 접근 권한 관리  
+  - 로그인한 회원이 관리자 권한(ROLE_ADMIN)을 가지고 있는지 확인하여 관리자 전용 기능 접근 제어  
+
+</details>
+
+<br>
 
 ## 5. 주요 기능
 <br>
 
-🔍 **영화 자동완성 검색** (ElasticSearch)
-📝 **리뷰 작성 및 좋아요**
-💿 **영화 정보 조회** (Redis)
-📰 **칼럼 작성** (4등급 이상 유저만 가능)
-💬 **실시간 채팅방** (WebSocket 기반)
-💾 **영화 플레이리스트 저장** (하트 + 리스트 선택/생성)
-🎬 **인기영화 정보 조회**
-🔑 **소셜 로그인/로그아웃** (OAuth2)
-🧑🏻 **프로필 정보 수정**
-🎯 **등급 시스템** (jelly → coke → nachos → hotdog → popcorn)
-🧩 **Spring Batch 기반 TMDB API 연동** (API Key 병렬 처리 및 배치작업을 통한 RDS 저장)
+🔍 **영화 자동완성 검색** (ElasticSearch)  <br>
+📝 **리뷰 작성 및 좋아요**  <br>
+💿 **영화 정보 조회** (Redis)  <br>
+📰 **칼럼 작성** (4등급 이상 유저만 가능)  <br>
+💬 **실시간 채팅방** (WebSocket 기반)  <br>
+💾 **영화 플레이리스트 저장** (하트 + 리스트 선택/생성)  <br>
+🎬 **인기영화 정보 조회**  <br>
+🔑 **소셜 로그인/로그아웃** (OAuth2)  <br>
+🧑🏻 **프로필 정보 수정**  <br>
+🎯 **등급 시스템** (jelly → coke → nachos → hotdog → popcorn)  <br>
+🧩 **Spring Batch 기반 TMDB API 연동** (API Key 병렬 처리 및 배치작업을 통한 RDS 저장)  <br>
 🗃️ **관리자 페이지** (회원, 리뷰 관리)
+
+<br>
 
 ## 6. 기술 스택
 <br>
@@ -250,9 +261,10 @@
 | 외부 API | TMDB API |
 | 공통 | Lombok, SLF4J, ERD(erdcloud.com), REST API 설계 |
 
-## 7. 프로젝트 구조
 <br>
 
+## 7. 프로젝트 구조
+<br>
 
 ```
 📁 CinephileLog/
@@ -272,7 +284,7 @@
       ├── 💬 review/ — 리뷰 도메인
       └── 🧠 service/ — 비즈니스 로직 처리 서비스 클래스
 ```
-
+<br>
 
 ## 8. 기능 명세서</summary><br>
 
@@ -383,6 +395,8 @@
 
 </details>
 
+<br>
+
 ## 9. 화면 설계
 
 ### 🏠 Main Page 1  
@@ -429,6 +443,8 @@
 
 ### ✏️ Admin - Review Management Edit  
 ![Review Management Edit](https://github.com/user-attachments/assets/11e424df-a6ee-4c06-b42f-f801a967b577)
+
+<br>
 
 ## 10. API 명세서
 
