@@ -180,7 +180,7 @@
 <body>
 <div id="main-area">
     <div th:replace="header :: siteHeader"></div>
-    <div class="container">
+    <div id="main-content" class="container">
         <div id="chat-container">
             <div class="movie-card" th:onclick="|location.href='/movieDetail/${movieId}'|">
             <img th:src="'https://image.tmdb.org/t/p/w500' + ${posterUrl}" class="poster-img" alt="poster">

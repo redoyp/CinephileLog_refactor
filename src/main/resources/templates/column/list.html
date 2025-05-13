@@ -19,7 +19,8 @@
     <div class="container mt-5">
         <h2>칼럼 게시판</h2>
 
-        <form class="form-inline mb-3" method="get">
+        <form class="form-inline mb-3 d-flex flex-wrap w-100" method="get">
+            <div class="d-flex flex-wrap">
             <select name="size" class="form-control mr-2" onchange="autoSubmitForm()">
                 <option th:selected="${size == 10}" value="10">10개씩</option>
                 <option th:selected="${size == 20}" value="20">20개씩</option>
@@ -34,8 +35,9 @@
             </select>
             <input type="text" name="keyword" th:value="${keyword}" class="form-control mr-2" placeholder="검색어"/>
             <button type="submit" class="btn btn-primary">검색</button>
+            </div>
             <a href="/column/write"
-               class="btn btn-success"
+               class="btn btn-success ml-auto mb-2"
                style="margin-left: 419px"
                id="write-button"
                th:data-user-id="${userId}"
