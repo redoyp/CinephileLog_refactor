@@ -1,9 +1,23 @@
-# 🎬 CinephileLog
+![image (3)](https://github.com/user-attachments/assets/ee90edc8-444e-4399-b270-3ab611a84c44)# 🎬 CinephileLog
 
 > 영화 마니아들을 위한 리뷰 & 커뮤니티 플랫폼  
 > TMDB API 기반 검색, 리뷰, 칼럼, 채팅, 플레이리스트 등 다양한 소셜 기능 제공
 
 🍿 https://cinephilog.duckdns.org/
+
+---
+
+## 📑 목차
+- [1. 프로젝트 소개](#1-프로젝트-소개)
+- [2. 팀원](#2-팀원)
+- [3. 프로젝트 요구사항 체크리스트](#3-프로젝트-요구사항-체크리스트)
+- [4. 서비스 특징](#4-서비스-특징)
+- [5. 주요 기능](#5-주요-기능)
+- [6. 기술 스택](#6-기술-스택)
+- [7. 프로젝트 구조](#7-프로젝트-구조)
+- [8. 기능 명세서](#8-기능-명세서)
+- [9. 화면 설계](#9-화면-설계)
+- [10. API 명세서](#10-api-명세서)
 
 ---
 
@@ -202,7 +216,8 @@
 
 </details>
 
-## 5. 주요 기능<br>
+## 5. 주요 기능
+<br>
 
 - 🔍 **영화 자동완성 검색** (ElasticSearch)
 - 📝 **리뷰 작성 및 좋아요**
@@ -217,7 +232,8 @@
 - 🧩 **Spring Batch 기반 TMDB API 연동** (API Key 병렬 처리 및 배치작업을 통한 RDS 저장)
 - 🗃️ **관리자 페이지** (회원, 리뷰 관리)
 
-## 6. 기술 스택<br>
+## 6. 기술 스택
+<br>
 
 | 영역 | 기술 |
 |---|---|
@@ -230,7 +246,8 @@
 | 외부 API | TMDB API |
 | 공통 | Lombok, SLF4J, ERD(erdcloud.com), REST API 설계 |
 
-## 7. 프로젝트 구조<br>
+## 7. 프로젝트 구조
+<br>
 
 
 ```
@@ -252,176 +269,8 @@ CinephileLog/
 └── service/        # 비즈니스 로직 처리 서비스 클래스
 ```
 
-## 8. 테이블 리스트<br>
 
-<details>
-<summary>👦🏻 user</summary><br>  
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| user_id | BIGINT | 유저 아이디 |
-| provider | VARCHAR(20) | 프로바이더 |
-| email | VARCHAR(300) | 이메일 |
-| nickname | VARCHAR(100) | 닉네임 |
-| role | ENUM | 권한 |
-| grade_id | BIGINT | 등급 아이디 |
-| point | BIGINT | 포인트 |
-| is_active | VARCHAR(1) | 가입 상태 |
-| register_date | TIMESTAMP | 가입날짜 |
-| update_date | TIMESTAMP | 수정날짜 |
-| last_login | TIMESTAMP | 최종 접속 날짜 |
-| login_count | BIGINT | 접속 횟수 |
-
-</details>
-
-<details>
-<summary>🎬 movie</summary><br> 
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| movie_id | BIGINT | 영화 아이디 |
-| title | VARCHAR(250) | 영화 이름 |
-| title_original | VARCHAR(250) | 오리지널 영화 이름 |
-| release_date | DATE | 개봉 날짜 |
-| genres | TEXT | 장르 |
-| poster_url | VARCHAR(250) | 영화 포스터 |
-| rating | INT | 평점 |
-| synopsis | TEXT | 개요 |
-| synopsis_original | TEXT | 오리지널 개요 |
-| director | TEXT | 감독 |
-| director_original | TEXT | 오리지널 감독 |
-| cast | TEXT | 배우 |
-| cast_original | TEXT | 오리지널 배우 |
-
-</details>
-
-<details>
-<summary>🎞 column_article</summary><br>
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| column_id | BIGINT | 칼럼 아이디 |
-| title | VARCHAR(300) | 제목 |
-| content | TEXT | 내용 |
-| created_date | TIMESTAMP | 생성 날짜 |
-| updated_date | TIMESTAMP | 수정 날짜 |
-| is_deleted | BOOLEAN | 삭제 상태 |
-| view_count | BIGINT | 조회수 |
-| user_id | BIGINT | 유저 아이디 |
-| movie_id | BIGINT | 영화 아이디 |
-
-</details>
-
-<details>
-<summary>📜 playlist</summary><br>  
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| playlist_id | BIGINT | 플레이리스트 아이디 |
-| user_id | BIGINT | 유저 아이디 |
-| name | BIGINT | 이름 |
-| description | TEXT | 설명 |
-| created_date | TIMESTAMP | 생성 날짜 |
-
-</details>
-
-<details>
-<summary>📽 playlist_movie</summary><br>
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| playlist_id | BIGINT | 플레이리스트 아이디 |
-| movie_id | BIGINT | 영화 아이디 |
-
-</details>
-
-<details>
-<summary>🎖 grade</summary><br>
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| grade_id | BIGINT | 등급 아이디 |
-| grade_name | VARCHAR(100) | 등급 이름 |
-
-</details>
-
-<details>
-<summary>📝 user_score</summary><br>
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| user_id | BIGINT | 유저 아이디 |
-| review_count | INT | 리뷰수 |
-| like_count | INT | 좋아수 |
-| weighted_score | DOUBLE | 점수 |
-| updated_at | TIMESTAMP | 수정 날짜 |
-
-</details>
-
-<details>
-<summary>👓 review</summary><br>
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| review_id | BIGINT | 리뷰 아이디 |
-| user_id | BIGINT | 유저 아이디 |
-| movie_id | BIGINT | 영화 아이디 |
-| rating | DECIMAL(3,1) | 별점 |
-| content | TEXT | 내용 |
-| created_date | TIMESTAMP | 리뷰 작성일 |
-| updated_date | TIMESTAMP | 수정 날짜 |
-| like_count | BIGINT | 추천수(좋아요수) |
-| blinded | BOOLEAN | 블라인드 |
-
-</details>
-
-<details>
-<summary>❤ review_like</summary><br> 
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| like_id | BIGINT | 좋아요 아이디 |
-| user_id | BIGINT | 유저 아이디 |
-| review_id | BIGINT | 리뷰 아이디 |
-
-</details>
-
-<details>
-<summary>📱 chatting_room</summary><br>
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| room_id | BIGINT | 채팅방 아이디 |
-| movie_id | BIGINT | 영화 아이디 |
-| room_name | VARCHAR(250) | 채팅방 이름 |
-| created_date | TIMESTAMP | 생성 날짜 |
-
-</details>
-
-<details>
-<summary>🖥 user_chatting_room</summary><br>  
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| user_id | BIGINT | 유저 아이디 |
-| room_id | BIGINT | 채팅방 아이디 |
-
-</details>
-
-<details>
-<summary>💬 message</summary><br>
-
-| Column Name | Type | Description |
-| --- | --- | --- |
-| message_id | BIGINT | 메시지 아이디 |
-| room_id | BIGINT | 채팅방 아이디 |
-| user_id | BIGINT | 유저 아이디 |
-| sent_time | TIMESTAMP | 보낸 시간 |
-| content | TEXT | 내용 |
-
-</details>
-
-## 9. 기능 명세서</summary><br>
+## 8. 기능 명세서</summary><br>
 
 <details>
 <summary>✔️ 회원 관리</summary><br>  
@@ -530,71 +379,73 @@ CinephileLog/
 
 </details>
 
-## 10. 화면 설계<br>
+## 9. 화면 설계
+<br>
 
 ### 🏡Main Page1
 
-![image.png](attachment:f966541b-1f29-4a65-b5b5-3e62f54f495c:image.png)
+![image](https://github.com/user-attachments/assets/997e725f-3a49-4617-a4d6-9bf6383158a6)
 
 ### 🏡Main Page2
 
-![image.png](attachment:8a5bc256-ed59-4532-be48-75beda5bc4fa:image.png)
+![image (1)](https://github.com/user-attachments/assets/1720b1e5-89a6-4a8e-9bd9-6e9b00d23c71)
 
 ### 🎬Movie Column
 
-![image.png](attachment:3b7d3646-3388-44f7-869e-7f002116fe71:image.png)
+![image (2)](https://github.com/user-attachments/assets/0b127528-f046-49fc-aa77-a1500dcafc48)
 
 ### 📱Chat Room
 
-![image.png](attachment:563ac217-756d-4efd-98cc-4d3b2795b756:image.png)
+![image (3)](https://github.com/user-attachments/assets/064e9c94-a488-4af4-9a97-3099fd8f96ad)
+
 
 ### 🎖Grade Description Page
-
-![image.png](attachment:4651969d-8f23-49d8-98f1-e16de694192f:image.png)
+![image (4)](https://github.com/user-attachments/assets/6c9bd2a9-5b90-4689-9db4-b14565d80771)
 
 ### 📔My Profile
 
-![image.png](attachment:9511eae5-30c1-4768-bdee-699943a702a3:image.png)
+![image (5)](https://github.com/user-attachments/assets/eed6ce99-f903-42b9-9353-1c6d9bfcf7ca)
 
 ### 📘Admin - User Management Page
 
-![image.png](attachment:c7f77fe5-3bc1-4230-9c1f-51ec0963b498:image.png)
+![image (6)](https://github.com/user-attachments/assets/cc0f99b2-03e7-43f5-8d60-97a8e9d62b7b)
 
 ### 📘Admin - Review Management Page
 
-![image.png](attachment:f76fc9a3-5419-43a6-8a5f-9779922f816e:image.png)
+![image (7)](https://github.com/user-attachments/assets/61ed966a-a3e6-4b6b-b2e8-aab200f4233f)
 
 ### 📝Sign Up - Set Nickname
 
-![image.png](attachment:ad7f750c-1445-427f-94cd-1f7e61a16b3f:image.png)
+![image (8)](https://github.com/user-attachments/assets/83131c52-1b50-4e32-8d69-572b2dfa498c)
 
 ### 🔒Log In Page
 
-![image.png](attachment:5efde4fd-9e35-4801-9c09-5235cc65830f:image.png)
+![image (9)](https://github.com/user-attachments/assets/e4efee95-b7a7-4cc9-8009-62e4c8872ab4)
 
 ### 📢Movie Column Create
 
-![image.png](attachment:b7054bc5-0915-4865-99c1-5bd2023a8333:image.png)
+![image (10)](https://github.com/user-attachments/assets/de22ed82-dcc4-4705-9502-0eb6d7ab98a9)
 
 ### 👓Movie Review
 
-![image.png](attachment:33ed91e5-cd1f-4e67-8484-1e6c147af1b5:image.png)
+![image (11)](https://github.com/user-attachments/assets/5777a571-a088-4b61-8910-b0145cc132fa)
 
 ### 👨🏻‍✈️Admin Main Page
 
-![image.png](attachment:1ce6e239-b0da-47d3-b13b-91209c2278af:image.png)
+![image (12)](https://github.com/user-attachments/assets/1470043d-8e1a-42bd-89b0-39cc43fd6055)
 
 ### Admin - User Management Modification Page
 
-![image.png](attachment:c1b334a5-a24a-419b-a894-f2c2a12e8a99:image.png)
+![image (13)](https://github.com/user-attachments/assets/b0878ed2-a261-4d9e-a93b-4f7b1c8014fb)
 
 ### Admin - Review Management Modification Page
 
-![image.png](attachment:d24bcaea-305d-422a-adf9-94508fd0c3cd:image.png)
+![image (14)](https://github.com/user-attachments/assets/11e424df-a6ee-4c06-b42f-f801a967b577)
 
 </details>
 
-## 11. API 명세서<br> 
+## 10. API 명세서
+<br> 
 
 ### 📁 User
 
