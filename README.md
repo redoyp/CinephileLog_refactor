@@ -7,8 +7,7 @@
 
 ---
 
-## <details open>
-<summary>📑 목차 </summary>
+## 📑 목차
 - [1. 프로젝트 소개](#1-프로젝트-소개)
 - [2. 팀원](#2-팀원)
 - [3. 프로젝트 요구사항 체크리스트](#3-프로젝트-요구사항-체크리스트)
@@ -20,10 +19,12 @@
 - [9. 기능 명세서](#9-기능-명세서)
 - [10. 화면 설계](#10-화면-설계)
 - [11. API 명세서](#11-api-명세서)
-</details>
+
 ---
 
-## 1. 프로젝트 소개
+<details>
+<summary>1. 프로젝트 소개</summary>
+
 
 > ‘ 아.. 오늘은 영화 뭐 보지? ‘  
 > ‘ 다른 사람들은 결말을 어떻게 해석했을까? 얘기 나눌 곳 어디 없나? ‘  
@@ -41,26 +42,34 @@
 
 ---
 
-## 2. 팀원
+</details>
+
+<details>
+<summary>2. 팀원</summary>
+
 
 | 이름 | GitHub/이메일 |
 |------|----------------|
 | 박동재 | [ehdwo13](https://github.com/ehdwo13) |
 | 이동엽 | [redoyp](https://github.com/redoyp) |
-| 변규리 | [gyuri01243@gmail.com](https://github.com/gyuri0124) |
+| 변규리 | [gyuri0124](https://github.com/gyuri0124) |
 | Elini | [elini-ng](https://github.com/elini-ng) |
 | 오시완 | [ohsiwan](https://github.com/ohsiwan) |
 
 ---
 
-## 3. 프로젝트 요구사항 체크리스트
+</details>
 
-### 🔧 0단계: 환경 구성 및 협업
+<details>
+<summary>3. 프로젝트 요구사항 체크리스트</summary>
+
+<details>
+<summary>### 🔧 0단계: 환경 구성 및 협업</summary>
 
 - [✅] Github Organizations 을 통한 협업
 - [✅] Git Flow 전략 사용
 - [✅] `feature/기능명` 브랜치 전략 사용
-- [✅] Pull Request 기반 Merge 진행
+- [✅] Main/Develop 브랜치 보호규칙 -> Pull Request 기반 Merge 진행
 - [✅] 디스코드 봇을 통한 Commit/Push/Pull Request 알림
 - [✅] 관계형 DB (MySQL) 사용
 - [✅] REST API 설계 및 문서화
@@ -69,8 +78,10 @@
 - [✅] BE/FE 통합 프로젝트 구조
 
 ---
+</details>
 
-### 📌 1단계: 게시판 (칼럼 기능으로 구현)
+<details>
+<summary>### 📌 1단계: 게시판 (칼럼 기능으로 구현)</summary>
 
 - [✅] 글 목록 보기 `/column`
 - [✅] 글 상세 보기 `/column/{id}`
@@ -80,8 +91,10 @@
 - [✅] 수정 시간 기록 및 출력
 
 ---
+</details>
 
-### 👤 2단계: 회원 기능
+<details>
+<summary>### 👤 2단계: 회원 기능</summary>
 
 - [✅] 회원가입 : Oauth를 통한 소셜로그인
 - [✅] 로그인 / 로그아웃
@@ -91,7 +104,10 @@
 
 ---
 
-### 🔐 3단계: 등급별 기능 제한
+</details>
+
+<details>
+<summary>### 🔐 3단계: 등급별 기능 제한</summary>
 
 - [✅] 나만의 플레이리스트 : 2등급(coke) 이상만 가능
 - [✅] 영화 채팅방 접근 : 3등급(nachos) 이상만 가능
@@ -100,7 +116,10 @@
 
 ---
 
-### 🛠️ 4단계: 관리자 페이지
+</details>
+
+<details>
+<summary>### 🛠️ 4단계: 관리자 페이지</summary>
 
 - [✅] 유저 조회 (가입일, 접속 정보 등)
 - [✅] 유저 권한/등급 수정
@@ -109,7 +128,10 @@
 
 ---
 
-### 🚀 5단계: 서비스 배포
+</details>
+
+<details>
+<summary>### 🚀 5단계: 서비스 배포</summary>
 
 - [✅] AWS EC2 기반 배포
   - Amazon Linux 2023 + Spring Boot 실행
@@ -132,9 +154,15 @@
 
 ---
 
-## 4. 서비스 특징
+</details>
 
-## 🗃️ TMDB 영화 데이터 수집 (배치 시스템)
+</details>
+
+<details>
+<summary>4. 서비스 특징</summary>
+
+<details>
+<summary>## 🗃️ TMDB 영화 데이터 수집 (배치 시스템)</summary>
 
 - Spring Batch 기반으로 영화 ID 범위를 파티셔닝하여 병렬로 TMDB API 호출
 - 각 파티션은 고유한 ID 범위와 API 키를 할당받아 비동기 방식으로 처리
@@ -149,7 +177,10 @@
 
 ---
 
-## 🔍 영화 검색 시스템 (Elasticsearch 기반)
+</details>
+
+<details>
+<summary>## 🔍 영화 검색 시스템 (Elasticsearch 기반)</summary>
 
 - **Elasticsearch** 기반으로 검색 인덱스를 구축하여 빠르고 정확한 검색 기능 제공
 - **자동완성(Auto-complete)** 기능:  
@@ -161,7 +192,10 @@
 
 ---
 
-## 💿 영화 정보 조회 (Redis)
+</details>
+
+<details>
+<summary>## 💿 영화 정보 조회 (Redis)</summary>
 
 - **Redis** 를 사용하여 DB 부하를 줄이고 응답 속도를 높임
 - movieId에 해당하는 영화 정보 조회 
@@ -173,7 +207,10 @@
 
 ---
 
-## 🔑 소셜 로그인/로그아웃 (OAuth2)
+</details>
+
+<details>
+<summary>## 🔑 소셜 로그인/로그아웃 (OAuth2)</summary>
 
 - **OAuth2** 를 사용하여 각자 provider의 client id 하고 secret code로 로그인/로그아웃 
   - 로그인 성공하면 회원 정보 (이메일, provider)를 저장
@@ -183,7 +220,10 @@
 
 ---
 
-## 🔒 관리자 페이지
+</details>
+
+<details>
+<summary>## 🔒 관리자 페이지</summary>
 
 - `/admin/**` 경로를 통해 접근 가능한 관리자 인터페이스를 제공하여 운영 및 관리에 필요한 주요 기능 관리
 - **회원 관리** 기능:
@@ -199,7 +239,14 @@
 	- 숨김 처리된 리뷰를 다시 보이도록 해제
 - 회원에게 등급(Grade)을 부여하고 권한(Role)을 설정해 서비스 접근 권한 관리
 - 로그인한 회원이 관리자 권한(ROLE_ADMIN)을 가지고 있는지 확인하여 관리자 전용 기능 접근 제어
-## 5. 주요 기능
+
+</details>
+
+</details>
+
+<details>
+<summary>5. 주요 기능</summary>
+
 
 - 🔍 **영화 자동완성 검색** (ElasticSearch)
 - 📝 **리뷰 작성 및 좋아요**
@@ -216,7 +263,11 @@
 
 ---
 
-## 6. 기술 스택
+</details>
+
+<details>
+<summary>6. 기술 스택</summary>
+
 
 | 영역 | 기술 |
 |---|---|
@@ -231,32 +282,41 @@
 
 ---
 
-## 7. 프로젝트 구조
+</details>
+
+<details>
+<summary>7. 프로젝트 구조</summary>
+
 
 ```
 CinephileLog/
-├── column/
-├── config/
-├── configuration/
-├── controller/
-├── domain/
-├── dto/
+├── column/         # 칼럼 도메인 (작성, 조회 등)
+├── config/         # Redis, Elasticsearch 등 외부 설정
+├── configuration/  # Spring Security 설정
+├── controller/     # 메인 화면, 검색, 유저, 채팅 등 API/view 컨트롤러
+├── domain/         # 공통 도메인 (User, Playlist, Grade, Chat 등)
+├── dto/            # 요청/응답 DTO 클래스
 ├── external/
-│   ├── batch/
-│   └── service/
-├── handler/
-├── mapper/
-├── movie/
-├── repository/
-├── review/
-└── service/
+│   ├── batch/      # TMDB 연동 Spring Batch 처리
+│   └── service/    # TMDB API Client 로직
+├── handler/        # 전역 예외 처리 핸들러
+├── mapper/         # MyBatis 매퍼 인터페이스
+├── movie/          # 영화 도메인
+├── repository/     # JPA/QueryDSL 등 저장소 레이어
+├── review/         # 리뷰 도메인
+└── service/        # 비즈니스 로직 처리 서비스 클래스
 ```
 
 ---
 
-## 8. 테이블 리스트
+</details>
 
-### 👦🏻 user
+<details>
+<summary>8. 테이블 리스트</summary>
+
+
+<details>
+<summary>### 👦🏻 user</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -273,7 +333,10 @@ CinephileLog/
 | last_login | TIMESTAMP | 최종 접속 날짜 |
 | login_count | BIGINT | 접속 횟수 |
 
-### 🎬 movie
+</details>
+
+<details>
+<summary>### 🎬 movie</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -291,7 +354,10 @@ CinephileLog/
 | cast | TEXT | 배우 |
 | cast_original | TEXT | 오리지널 배우 |
 
-### 🎞 column_article
+</details>
+
+<details>
+<summary>### 🎞 column_article</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -305,7 +371,10 @@ CinephileLog/
 | user_id | BIGINT | 유저 아이디 |
 | movie_id | BIGINT | 영화 아이디 |
 
-### 📜 playlist
+</details>
+
+<details>
+<summary>### 📜 playlist</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -315,21 +384,30 @@ CinephileLog/
 | description | TEXT | 설명 |
 | created_date | TIMESTAMP | 생성 날짜 |
 
-### 📽 playlist_movie
+</details>
+
+<details>
+<summary>### 📽 playlist_movie</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
 | playlist_id | BIGINT | 플레이리스트 아이디 |
 | movie_id | BIGINT | 영화 아이디 |
 
-### 🎖 grade
+</details>
+
+<details>
+<summary>### 🎖 grade</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
 | grade_id | BIGINT | 등급 아이디 |
 | grade_name | VARCHAR(100) | 등급 이름 |
 
-### 📝 user_score
+</details>
+
+<details>
+<summary>### 📝 user_score</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -339,7 +417,10 @@ CinephileLog/
 | weighted_score | DOUBLE | 점수 |
 | updated_at | TIMESTAMP | 수정 날짜 |
 
-### 👓 review
+</details>
+
+<details>
+<summary>### 👓 review</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -353,7 +434,10 @@ CinephileLog/
 | like_count | BIGINT | 추천수(좋아요수) |
 | blinded | BOOLEAN | 블라인드 |
 
-### ❤ review_like
+</details>
+
+<details>
+<summary>### ❤ review_like</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -361,7 +445,10 @@ CinephileLog/
 | user_id | BIGINT | 유저 아이디 |
 | review_id | BIGINT | 리뷰 아이디 |
 
-### 📱 chatting_room
+</details>
+
+<details>
+<summary>### 📱 chatting_room</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -370,7 +457,10 @@ CinephileLog/
 | room_name | VARCHAR(250) | 채팅방 이름 |
 | created_date | TIMESTAMP | 생성 날짜 |
 
-### 💬 message
+</details>
+
+<details>
+<summary>### 💬 message</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
@@ -380,18 +470,26 @@ CinephileLog/
 | sent_time | TIMESTAMP | 보낸 시간 |
 | content | TEXT | 내용 |
 
-### 🖥 user_chatting_room
+</details>
+
+<details>
+<summary>### 🖥 user_chatting_room</summary>
 
 | Column Name | Type | Description |
 | --- | --- | --- |
 | user_id | BIGINT | 유저 아이디 |
 | room_id | BIGINT | 채팅방 아이디 |
 
+</details>
 ---
 
-## 9. 기능 명세서
+</details>
 
-### ✔️ 회원 관리
+<details>
+<summary>9. 기능 명세서</summary>
+
+<details>
+<summary>### ✔️ 회원 관리</summary>
 
 | **No** | **메뉴** | **기능** | **기능 설명** |
 | --- | --- | --- | --- |
@@ -404,7 +502,10 @@ CinephileLog/
 | 7 |  | 회원 탈퇴 | 탈퇴 버튼을 통해 탈퇴 후 메인 페이지 연결 |
 | 8 | 플레이리스트 | 나만의 영화 리스트(내 플레이리스트) | 내 플레이리스트 확인 |
 
-### 🎬 영화 상세 페이지
+</details>
+
+<details>
+<summary>### 🎬 영화 상세 페이지</summary>
 
 | **No** | **메뉴** | **기능** | **기능 설명** |
 | --- | --- | --- | --- |
@@ -418,7 +519,10 @@ CinephileLog/
 | 16 |  | 좋아요  | 자신의 리뷰를 포함하여 모든 리뷰에 좋아요 가능 |
 | 17 | 채팅방 | 채팅방 이동 | 우측 하단의 말풍선 버튼을 통해 채팅방 연결 |
 
-### 📄 영화 칼럼 페이지
+</details>
+
+<details>
+<summary>### 📄 영화 칼럼 페이지</summary>
 
 | **No** | **메뉴** | **기능** | **기능 설명** |
 | --- | --- | --- | --- |
@@ -428,20 +532,29 @@ CinephileLog/
 | 21 |  | 칼럼 정렬 | 10개 또는 20개/ 최신순 또는 조회순/ 제목 또는 작성자 정렬 |
 | 22 |  | 칼럼 삭제 | 이미 작성한 칼럼에 대해 삭제 |
 
-### 💬 채팅방
+</details>
+
+<details>
+<summary>### 💬 채팅방</summary>
 
 | **No** | **메뉴** | **기능** | **기능 설명** |
 | --- | --- | --- | --- |
 | 23 | 채팅방 | 영화 정보 확인 | 좌측 포스터에 마우스 오버 후 영화 제목, 별점, 감독, 배우 정보 확인  |
 | 24 |  | 채팅 | 해당 채팅방에 입장한 유저들과 실시간 소통 (나쵸 등급부터 가능) |
 
-### 📊 비회원
+</details>
+
+<details>
+<summary>### 📊 비회원</summary>
 
 | **No** | **메뉴** | **기능** | **기능 설명** |
 | --- | --- | --- | --- |
 | 25 |  | 리뷰 보기 | 영화 상세 페이지로 이동시 리뷰 조회 가능 |
 
-### 🔐 관리자 기능
+</details>
+
+<details>
+<summary>### 🔐 관리자 기능</summary>
 
 | **No** | **메뉴** | **기능** | **기능 설명** |
 | --- | --- | --- | --- |
@@ -453,7 +566,10 @@ CinephileLog/
 | 31 |  | 리뷰 검색 | 닉네임, 리뷰 내용, 영화 제목으로 검색 |
 | 32 |  | 리뷰 관리 | 리뷰 정보를 숨기거나 숨긴 리뷰를 숨김해제하는 페이지. 정보를 수정하고 리뷰 목록으로 되돌아갈 수 있음 |
 
-### 🏠 메인페이지 기능
+</details>
+
+<details>
+<summary>### 🏠 메인페이지 기능</summary>
 
 | **No** | **메뉴** | **기능** | **기능 설명** |
 | --- | --- | --- | --- |
@@ -463,7 +579,10 @@ CinephileLog/
 | 36 |  | 내 프로필 페이지 이동 | 내 프로필 페이지 연결 |
 | 37 |  | 관리자 페이지 이동 | 관리자 권한이 부여된 경우, 관리자 페이지로 이동 가능 |
 
-### 📌 네비게이션 바
+</details>
+
+<details>
+<summary>### 📌 네비게이션 바</summary>
 
 | **No** | **메뉴** | **기능** | **기능 설명** |
 | --- | --- | --- | --- |
@@ -474,9 +593,15 @@ CinephileLog/
 | 42 |  | 로그아웃 | 로그아웃 버튼을 통해 로그아웃 후 메인 페이지 이동 |
 | 43 |  | 등급 소개 페이지 이동 | 등급 소개 버튼을 통해 등급 소개 페이지 이동 |
 
+</details>
+
 ---
 
-## 10. 화면 설계
+</details>
+
+<details>
+<summary>10. 화면 설계</summary>
+
 
 ### 🏡Main Page1
 
@@ -538,7 +663,11 @@ CinephileLog/
 
 ![image.png](attachment:d24bcaea-305d-422a-adf9-94508fd0c3cd:image.png)
 
-## 11. API 명세서
+</details>
+
+<details>
+<summary>11. API 명세서</summary>
+
 
 ### 📁 User
 
@@ -621,3 +750,4 @@ CinephileLog/
 | unblind review | POST | /admin/reviews/{reviewId}/unblind | 특정 reviewId를 가진 리뷰의 블라인드 처리 해제 |
 
 ---
+</details>
