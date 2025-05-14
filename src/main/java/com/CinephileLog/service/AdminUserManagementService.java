@@ -41,14 +41,12 @@ public class AdminUserManagementService {
 
         existingUser.setNickname(updatedUser.getNickname());
         existingUser.setGrade(updatedUser.getGrade());
-
         // 포인트 0 이상인지 확인
         if (updatedUser.getPoint() < 0) {
             throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
         } else {
             existingUser.setPoint(updatedUser.getPoint());
         }
-
         existingUser.setIsActive(updatedUser.getIsActive());
         existingUser.setUpdatedDate(LocalDateTime.now());
         existingUser.setRole(updatedUser.getRole());
