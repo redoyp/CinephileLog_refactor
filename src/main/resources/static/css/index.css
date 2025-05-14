@@ -267,12 +267,6 @@ html {
     border-radius: 8px;
 }
 
-/* 우측 컬럼 배경색 수정 */
-#index-right-content {
-    padding: 20px;
-    border-radius: 10px;
-}
-
 /* 영화 카드 스타일 (리뷰 스타일과 동일하게) */
 .movie-card {
     background-color: #2c2f33;
@@ -513,17 +507,11 @@ html {
 }
 
 .card{
-    width: 805px;
     border-radius: 1.25rem;
-    margin-left: 40px;
 }
 .medTitle{
     padding-bottom: 10px;
-    padding-left: 37px;
 }
 .bigTitle{
     font-size: 20px;
-}
-.leftCard{
-    width: 700px;
 }
