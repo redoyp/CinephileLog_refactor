@@ -255,6 +255,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.querySelector('.review-submit-btn');
     const ratingValue = document.getElementById('rating-value');
     const contentInput = document.querySelector('.review-input-content');
+    const MAX_SCORE = 60;
+
+    if (!contentInput) return;
+
+    const popover = bootstrap.Popover.getOrCreateInstance(contentInput);
+
+    contentInput.addEventListener('input', () => {
+        let str = contentInput.value;
+        let len = getCustomLength(str);
+
+        if (len > MAX_SCORE) {
+            contentInput.value = str.slice(0, -1);
+            popover.show();
+            setTimeout(() => popover.hide(), 2000);
+        }
+    });
 
     if (!submitButton) return;
 
@@ -274,10 +290,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const reviewData = {
-            rating: rating,
-            content: content
-        };
+        if (getCustomLength(content) > MAX_SCORE) {
+            alert('리뷰는 한글 20자 또는 영어 60자까지 입력할 수 있습니다.');
+            return;
+        }
+
+        const reviewData = { rating, content };
 
         try {
             const response = await fetch(`/movies/${movieId}/reviews`, {
@@ -394,3 +412,15 @@ document.addEventListener("mouseup", function (e) {
 });
 
 
+function getCustomLength(str) {
+    let len = 0;
+    for (let i = 0; i < str.length; i++) {
+        const ch = str.charCodeAt(i);
+        if ((ch >= 0xAC00 && ch <= 0xD7A3) || (ch >= 0x1100 && ch <= 0x11FF)) {
+            len += 3;
+        } else {
+            len += 1;
+        }
+    }
+    return len;
+}

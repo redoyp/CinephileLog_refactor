@@ -183,7 +183,12 @@
                     <!-- 리뷰 내용 입력 -->
                     <div class="content-input mb-3">
                         <label class="content-label">리뷰 작성</label>
-                        <textarea class="review-input-content" placeholder="리뷰와 별점을 입력하세요"></textarea>
+                        <textarea class="review-input-content form-control"
+                                  placeholder="리뷰와 별점을 입력하세요"
+                                  data-bs-toggle="popover"
+                                  data-bs-trigger="manual"
+                                  data-bs-placement="bottom"
+                                  data-bs-content="공백 포함 한글 20자 또는 영어 60자까지만 입력 가능합니다."></textarea>
                     </div>
 
                     <!-- 리뷰 생성/수정 삭제 버튼 -->
