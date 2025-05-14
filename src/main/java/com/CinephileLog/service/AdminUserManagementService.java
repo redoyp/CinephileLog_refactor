@@ -4,6 +4,7 @@ import com.CinephileLog.domain.User;
 import com.CinephileLog.mapper.UserScoreMapper;
 import com.CinephileLog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,17 @@ public class AdminUserManagementService {
     public void deleteUser(Long userId) {
         userScoreMapper.deleteUserById(userId);
         userRepository.deleteById(userId);
+    }
+
+    @Transactional
+    public void deactivateUser(Long userId) throws NotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        user.setIsActive("N");
+        user.setNickname("비활성화 처리된 회원입니다");
+
+        userRepository.save(user);
     }
 
     public List<User> searchUsersByKeyword(String keyword) {

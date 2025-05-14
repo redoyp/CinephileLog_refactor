@@ -5,6 +5,7 @@ import com.CinephileLog.domain.Role;
 import com.CinephileLog.domain.User;
 import com.CinephileLog.service.AdminUserManagementService;
 import com.CinephileLog.service.GradeService;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,10 +66,11 @@ public class AdminUserController {
     }
 
     @PostMapping("/delete/{userId}")
-    public String deleteUser(@PathVariable Long userId) {
-        adminUserManagementService.deleteUser(userId);
+    public String deactivateUser(@PathVariable Long userId) throws NotFoundException {
+        adminUserManagementService.deactivateUser(userId);
         return "redirect:/admin/users";
     }
+
 
     @GetMapping("/search")
     public String searchUsers(@RequestParam(value = "keyword", required = false) String keyword, Model model) {
