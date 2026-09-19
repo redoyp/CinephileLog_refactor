@@ -1,0 +1,63 @@
+spring.application.name=CinephileLog
+
+server.port=8080
+
+#redis ??
+spring.cache.type=redis
+spring.data.redis.host=localhost
+spring.data.redis.port=6379
+
+# Redis ??
+logging.level.org.springframework.data.redis=DEBUG
+logging.level.org.springframework.cache=DEBUG
+logging.level.org.springframework.beans.factory=DEBUG
+logging.level.org.springframework.data.redis.cache=DEBUG
+
+# admin email
+admin.emails=gyuri01243@gmail.com
+
+spring.datasource.driver-class-name=net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+spring.datasource.url=jdbc:log4jdbc:mysql://localhost:3306/movie
+spring.datasource.username=root
+spring.datasource.password=0000
+
+
+mybatis.mapper-locations=classpath:/mappers/*.xml
+mybatis.config-location=classpath:mybatis-config.xml
+
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.defer-datasource-initialization=true
+
+spring.thymeleaf.cache=false
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.thymeleaf.check-template-location=true
+spring.thymeleaf.mode=HTML
+spring.thymeleaf.encoding=UTF-8
+
+logging.level.org.springframework.data.elasticsearch.client.WIRE=TRACE
+
+tmdb.api-key=9baed192430bd93cdc1ccc63a59dd182
+tmdb.api.key=9baed192430bd93cdc1ccc63a59dd182
+tmdb.api.keys=9baed192430bd93cdc1ccc63a59dd182
+spring.config.import=optional:classpath:secret.properties
+
+logging.level.org.springframework.security=DEBUG
+logging.level.org.springframework.boot.autoconfigure.security.oauth2=DEBUG
+logging.level.org.springframework.security.oauth2=DEBUG
+
+movie.data.init=true
+# Spring Batch ??
+spring.batch.job.enabled=false
+spring.batch.jdbc.initialize-schema=always
+
+# Hikari Connection Pool ?? ??
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.connection-timeout=30000
+
+# OAuth2 ?? ???
+spring.security.oauth2.client.registration.google.client-id=dummy-client-id
+spring.security.oauth2.client.registration.google.client-secret=dummy-client-secret
+spring.security.oauth2.client.registration.google.scope=profile,email

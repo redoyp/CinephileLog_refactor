@@ -27,7 +27,7 @@ public class MovieIndexer implements CommandLineRunner {
     private final MovieRepository movieRepository;
     private final RestHighLevelClient esClient;
 
-    @Value("${cache.data.init}")
+    @Value("${movie.data.init}")
     private boolean movieDataInit;
 
     @Override

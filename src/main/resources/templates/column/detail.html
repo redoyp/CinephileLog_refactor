@@ -30,11 +30,13 @@
         <div th:text="${column.content}" style="white-space: pre-line; margin-bottom: 168px"></div>
         <hr>
         <a href="/column" class="btn btn-secondary">목록으로</a>
-        <a th:href="@{/column/edit/{id}(id=${column.columnId})}" class="btn btn-primary">수정</a>
-        <form method="post" th:action="@{'/column/delete/' + ${column.columnId}}" style="display:inline-block"
-              onsubmit="return confirm('정말 삭제하시겠습니까?')">
-          <button type="submit" class="btn btn-danger">삭제</button>
-        </form>
+        <span th:if="${nickname == column.nickname}">
+          <a th:href="@{/column/edit/{id}(id=${column.columnId})}" class="btn btn-primary">수정</a>
+          <form method="post" th:action="@{'/column/delete/' + ${column.columnId}}" style="display:inline-block"
+                onsubmit="return confirm('정말 삭제하시겠습니까?')">
+            <button type="submit" class="btn btn-danger">삭제</button>
+          </form>
+        </span>
       </div>
     </div>
   </div>

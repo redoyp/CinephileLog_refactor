@@ -3,6 +3,7 @@ package com.CinephileLog.review.repository;
 import com.CinephileLog.review.domain.Review;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -47,5 +48,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // 등급 4 이상인 유저의 리뷰만 조회
     @Query("SELECT r FROM Review r WHERE r.user.grade.gradeId >= :minGradeId AND r.blinded = false")
     List<Review> findEditorPickReviews(@Param("minGradeId") Long minGradeId);
+
+    @Modifying
+    @Query("UPDATE Review r SET r.likeCount = :likeCount WHERE r.id = :reviewId")
+    void updateLikeCount(@Param("reviewId") Long reviewId, @Param("likeCount") Long likeCount);
+
 
 }

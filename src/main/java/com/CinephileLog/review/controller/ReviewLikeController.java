@@ -3,6 +3,7 @@ package com.CinephileLog.review.controller;
 import com.CinephileLog.domain.User;
 import com.CinephileLog.review.domain.Review;
 import com.CinephileLog.review.dto.ReviewLikeResponse;
+import com.CinephileLog.review.dto.ReviewLikeResult;
 import com.CinephileLog.review.repository.ReviewRepository;
 import com.CinephileLog.review.service.ReviewLikeService;
 import java.util.NoSuchElementException;
@@ -26,12 +27,8 @@ public class ReviewLikeController {
     @PostMapping("/reviews/{reviewId}/like")
     public ResponseEntity<ReviewLikeResponse> reviewLike(@PathVariable Long reviewId,
                                                          @AuthenticationPrincipal OAuth2User oAuth2User) {
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new NoSuchElementException("해당하는 리뷰가 없음"));
-
         Long userId = oAuth2User.getAttribute("userId");
-        boolean liked = reviewLikeService.reviewLike(userId, review);
-
-        return ResponseEntity.ok(new ReviewLikeResponse(liked));
+        ReviewLikeResult result = reviewLikeService.reviewLike(userId, reviewId);
+        return ResponseEntity.ok(new ReviewLikeResponse(result.isLiked(), result.isGradeUp()));
     }
 }

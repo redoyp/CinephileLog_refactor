@@ -24,8 +24,8 @@ public class MovieIdRangePartitioner implements Partitioner {
     public Map<String, ExecutionContext> partition(int gridSize) {
         int latestId = tmdbApiClient.fetchLatestMovieId(apiKeys[0]);
 
-        // Id 값 50000 까지만 데이터 받아옴
-        latestId = Math.min(latestId, 50000);
+        // Id 값 100 까지만 데이터 받아옴
+        latestId = Math.min(latestId, 100);
 
         int range = latestId / apiKeys.length;
 

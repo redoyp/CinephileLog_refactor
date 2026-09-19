@@ -4,11 +4,15 @@ import com.CinephileLog.domain.User;
 import com.CinephileLog.repository.UserRepository;
 import com.CinephileLog.review.domain.Review;
 import com.CinephileLog.review.domain.ReviewLike;
+import com.CinephileLog.review.dto.ReviewLikeResult;
 import com.CinephileLog.review.repository.ReviewLikeRepository;
 import com.CinephileLog.review.repository.ReviewRepository;
 import com.CinephileLog.service.GradeService;
 import jakarta.transaction.Transactional;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,26 +34,38 @@ public class ReviewLikeService {
     }
 
     @Transactional
-    public boolean reviewLike(Long userId, Review review) {
+    public ReviewLikeResult reviewLike(Long userId, Long reviewId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없음"));
 
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("리뷰를 찾을 수 없음"));
+
         Optional<ReviewLike> existingLike = reviewLikeRepository.findByUserAndReview(user, review);
+
+        boolean liked;
+        long currentLikeCount = review.getLikeCount();
 
         if (existingLike.isPresent()) {
             reviewLikeRepository.delete(existingLike.get());
-            review.setLikeCount(review.getLikeCount() - 1);
-            reviewRepository.save(review);
-            return false;
+            liked = false;
+            currentLikeCount--;
         } else {
-            ReviewLike like = new ReviewLike(user, review);
-            reviewLikeRepository.save(like);
-            review.setLikeCount(review.getLikeCount() + 1);
-            reviewRepository.save(review);
-            gradeService.updateGradeForUser(userId);
-            return true;
+            reviewLikeRepository.save(new ReviewLike(user, review));
+            liked = true;
+            currentLikeCount++;
         }
+        reviewRepository.updateLikeCount(reviewId, currentLikeCount);
+
+        boolean gradeUp = liked && gradeService.updateGradeForUser(userId);
+
+        return new ReviewLikeResult(liked, gradeUp);
     }
+
+
+
+
+
 
 
     public List<ReviewLike> findReviewLikedByUser(Long userId) {
