@@ -38,5 +38,6 @@ out/
 
 # key.properties 숨기기
 /src/main/resources/secret.properties
+/src/main/resources/properties_template.txt
 
 .DS_Store

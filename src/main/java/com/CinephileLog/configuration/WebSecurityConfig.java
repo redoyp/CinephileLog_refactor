@@ -27,7 +27,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/images/**","/css/**","/login","/user", "/gradeInfo", "/home", "/").permitAll()
+                        .requestMatchers("/images/**","/css/**","/login","/user", "/gradeInfo", "/home", "/",
+                                "/movies/**" // movie 데이터 확인을 위한 임시 추가
+                        ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN") // /admin/** 경로는 ROLE_ADMIN 권한 필요
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
